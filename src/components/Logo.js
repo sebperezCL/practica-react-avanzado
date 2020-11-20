@@ -1,12 +1,11 @@
 import React from 'react';
+import { Box } from '@material-ui/core';
 
 const Logo = (props) => {
   return (
-    <img
-      alt="Logo"
-      src="/static/logo.svg"
-      {...props}
-    />
+    <Box>
+      <img alt="Logo" src="/img/logo192.png" {...props} />
+    </Box>
   );
 };
 
