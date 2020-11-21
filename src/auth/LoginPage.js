@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -9,6 +10,8 @@ import {
 } from '@material-ui/core';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
+import Layout from '../layout/Layout';
+import { login } from '../api/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,11 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin, history }) => {
   const [submitting, setSubmitting] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
   const [validPwd, setValidPwd] = useState(true);
   const [form, handleFormChange] = useForm({ email: '', password: '' });
+  const [error, setError] = useState(null);
   const classes = useStyles();
 
   const checkEmail = (email) => {
@@ -33,73 +37,99 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     const credentials = form;
     event.preventDefault();
+    setSubmitting(true);
+    login(credentials)
+      .then((result) => {
+        setSubmitting(false);
+        if (result) {
+          setError(null);
+          onLogin(result).then(history.push('/dashboard'));
+          return;
+        }
+        setError(new Error('Usuario o contraseña inválidos'));
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err);
+      });
   };
 
-  const handleEmail = (event) => {
+  const handleEmail = () => {
     const { email } = form;
     checkEmail(email) ? setValidEmail(true) : setValidEmail(false);
   };
 
-  const handlePwd = (event) => {
+  const handlePwd = () => {
     return form.password ? setValidPwd(true) : setValidPwd(false);
   };
 
+  const canSubmit = () => {
+    const { email, password } = form;
+    return !submitting && email && password;
+  };
+
   return (
-    <Page className={classes.root}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        height="100%"
-        justifyContent="flex-start"
-      >
-        <Container maxWidth="sm">
-          <form onSubmit={handleSubmit}>
-            <Box mb={3} textAlign="center">
-              <Typography gutterBottom color="textPrimary" variant="h2">
-                Entrar al sistema
-              </Typography>
-              <Typography color="textSecondary" gutterBottom variant="body2">
-                Ingrese sus datos para hacer login
-              </Typography>
-            </Box>
-            <TextField
-              fullWidth
-              label="Dirección Email"
-              margin="normal"
-              name="email"
-              type="email"
-              variant="outlined"
-              onChange={handleFormChange}
-              onBlur={handleEmail}
-              error={!validEmail}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              margin="normal"
-              name="password"
-              type="password"
-              variant="outlined"
-              onChange={handleFormChange}
-              onBlur={handlePwd}
-              error={!validPwd}
-            />
-            <Box my={2}>
-              <Button
-                color="primary"
-                // disabled={isSubmitting}
+    <Layout>
+      <Page className={classes.root}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          height="100%"
+          justifyContent="flex-start"
+        >
+          <Container maxWidth="sm">
+            <form onSubmit={handleSubmit}>
+              <Box mb={3} textAlign="center">
+                <Typography gutterBottom color="textPrimary" variant="h2">
+                  Entrar al sistema
+                </Typography>
+                <Typography color="textSecondary" gutterBottom variant="body2">
+                  Ingrese sus datos para hacer login
+                </Typography>
+              </Box>
+              <TextField
                 fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-              >
-                Login
-              </Button>
-            </Box>
-          </form>
-        </Container>
-      </Box>
-    </Page>
+                label="Dirección Email"
+                margin="normal"
+                name="email"
+                type="email"
+                variant="outlined"
+                onChange={handleFormChange}
+                onBlur={handleEmail}
+                error={!validEmail}
+              />
+              <TextField
+                fullWidth
+                label="Password"
+                margin="normal"
+                name="password"
+                type="password"
+                variant="outlined"
+                onChange={handleFormChange}
+                onBlur={handlePwd}
+                error={!validPwd}
+              />
+              <Box my={2}>
+                <Box mb={3} textAlign="center">
+                  {error && <div>{error.message}</div>}
+                </Box>
+                <Button
+                  color="primary"
+                  // disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  disabled={!canSubmit()}
+                >
+                  Login
+                </Button>
+              </Box>
+            </form>
+          </Container>
+        </Box>
+      </Page>
+    </Layout>
   );
 };
 
