@@ -29,4 +29,10 @@ client.logout = () =>
     resolve();
   });
 
+export const configureClient = (accessToken) => {
+  if (accessToken) {
+    setAuthorizationHeader(accessToken);
+  }
+};
+
 export default client;

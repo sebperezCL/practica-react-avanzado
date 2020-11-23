@@ -14,19 +14,19 @@ import './App.css';
  * FALTA RECUPERAR AL USUARIO SI YA ESTA LOGUEADO EN EL LOCAL STORAGE
  */
 
-function App() {
-  const [loggedUserId, setloggedUserId] = useState('');
+function App({ userInitiallyLogged }) {
+  const [userLogged, setUserLogged] = useState(userInitiallyLogged);
 
-  const handleLogin = (loggedUserId) =>
+  const handleLogin = (userLogged) =>
     new Promise((resolve) => {
-      setloggedUserId(loggedUserId);
+      setUserLogged(userLogged);
       resolve();
     });
 
   return (
     <AuthContextProvider
       value={{
-        isLogged: !!loggedUserId,
+        isLogged: !!userLogged,
         onLogin: handleLogin,
       }}
     >

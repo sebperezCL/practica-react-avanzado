@@ -5,7 +5,7 @@ import storage from '../utils/storage';
 export const login = (crendentials) =>
   client.login(crendentials).then((data) => {
     if (data) {
-      storage.set('auth', data.token);
+      storage.set('auth', { accessToken: data.token });
       return true;
     }
     return false;
