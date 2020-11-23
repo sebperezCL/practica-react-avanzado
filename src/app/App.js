@@ -23,6 +23,8 @@ function App({ userInitiallyLogged }) {
       resolve();
     });
 
+  const handleLogout = () => setUserLogged(null);
+
   return (
     <AuthContextProvider
       value={{
@@ -34,8 +36,12 @@ function App({ userInitiallyLogged }) {
         <GlobalStyles />
         <Switch>
           <Route path="/" exact>
-            {({ history }) => (
-              <LoginPage history={history} onLogin={handleLogin} />
+            {userLogged ? (
+              <Redirect to="/dashboard"></Redirect>
+            ) : (
+              ({ history }) => (
+                <LoginPage history={history} onLogin={handleLogin} />
+              )
             )}
           </Route>
           <PrivateRoute path="/dashboard" exact>

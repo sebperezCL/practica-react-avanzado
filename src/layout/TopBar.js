@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar, makeStyles, Button } from '@material-ui/core';
 import Logo from '../components/Logo';
+import AuthContext from '../auth/context';
 
 const useStyles = makeStyles({
   root: {},
   toolbar: {
     height: 64,
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   img: {
     height: 50,
@@ -15,6 +18,8 @@ const useStyles = makeStyles({
 });
 
 const TopBar = ({ ...props }) => {
+  const { isLogged } = useContext(AuthContext);
+
   const classes = useStyles();
 
   return (
@@ -23,6 +28,7 @@ const TopBar = ({ ...props }) => {
         <RouterLink to="/">
           <Logo className={classes.img} />
         </RouterLink>
+        {isLogged ? <Button variant="contained">Logout</Button> : ''}
       </Toolbar>
     </AppBar>
   );

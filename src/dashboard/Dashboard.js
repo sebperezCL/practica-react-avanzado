@@ -1,7 +1,12 @@
 import React from 'react';
+import Layout from '../layout/Layout';
 
 const Dashboard = () => {
-  return <div>Hola Ruta Privada</div>;
+  return (
+    <Layout>
+      <div>Hola Ruta Privada</div>
+    </Layout>
+  );
 };
 
 export default Dashboard;
