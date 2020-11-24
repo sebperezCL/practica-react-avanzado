@@ -129,7 +129,6 @@ const LoginPage = ({ onLogin, history }) => {
                 </Box>
                 <Button
                   color="primary"
-                  // disabled={isSubmitting}
                   fullWidth
                   size="large"
                   type="submit"
