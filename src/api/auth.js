@@ -2,10 +2,12 @@ import client from './client';
 
 import storage from '../utils/storage';
 
-export const login = (crendentials) =>
+export const login = (crendentials, savePwd) =>
   client.login(crendentials).then((data) => {
     if (data) {
-      storage.set('auth', { accessToken: data.token });
+      if (savePwd) {
+        storage.set('auth', { accessToken: data.token });
+      }
       return true;
     }
     return false;

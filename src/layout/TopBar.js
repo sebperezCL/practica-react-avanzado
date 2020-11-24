@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { AppBar, Toolbar, makeStyles, Button } from '@material-ui/core';
 import Logo from '../components/Logo';
 import AuthContext from '../auth/context';
+import { logout } from '../api/auth';
 
 const useStyles = makeStyles({
   root: {},
@@ -18,9 +19,14 @@ const useStyles = makeStyles({
 });
 
 const TopBar = ({ ...props }) => {
-  const { isLogged } = useContext(AuthContext);
+  const { isLogged, onLogout } = useContext(AuthContext);
 
   const classes = useStyles();
+
+  const handleLogout = () => {
+    logout();
+    onLogout();
+  };
 
   return (
     <AppBar className={classes.root} elevation={0} {...props}>
@@ -28,7 +34,13 @@ const TopBar = ({ ...props }) => {
         <RouterLink to="/">
           <Logo className={classes.img} />
         </RouterLink>
-        {isLogged ? <Button variant="contained">Logout</Button> : ''}
+        {isLogged ? (
+          <Button variant="contained" onClick={handleLogout}>
+            Logout
+          </Button>
+        ) : (
+          ''
+        )}
       </Toolbar>
     </AppBar>
   );

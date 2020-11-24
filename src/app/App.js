@@ -23,13 +23,14 @@ function App({ userInitiallyLogged }) {
       resolve();
     });
 
-  const handleLogout = () => setUserLogged(null);
+  const handleLogout = () => setUserLogged(false);
 
   return (
     <AuthContextProvider
       value={{
         isLogged: !!userLogged,
         onLogin: handleLogin,
+        onLogout: handleLogout,
       }}
     >
       <ThemeProvider theme={theme}>

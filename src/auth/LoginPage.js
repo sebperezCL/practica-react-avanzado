@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Alert,
   Box,
   Button,
   Container,
   TextField,
   Typography,
   makeStyles,
+  Checkbox,
+  FormControlLabel,
 } from '@material-ui/core';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
@@ -26,6 +27,7 @@ const LoginPage = ({ onLogin, history }) => {
   const [submitting, setSubmitting] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
   const [validPwd, setValidPwd] = useState(true);
+  const [savePwd, setSavePwd] = useState(false); // estado savePwd para recordar contraseña
   const [form, handleFormChange] = useForm({ email: '', password: '' });
   const [error, setError] = useState(null);
   const classes = useStyles();
@@ -38,7 +40,7 @@ const LoginPage = ({ onLogin, history }) => {
     const credentials = form;
     event.preventDefault();
     setSubmitting(true);
-    login(credentials)
+    login(credentials, savePwd)
       .then((result) => {
         setSubmitting(false);
         if (result) {
@@ -61,6 +63,10 @@ const LoginPage = ({ onLogin, history }) => {
 
   const handlePwd = () => {
     return form.password ? setValidPwd(true) : setValidPwd(false);
+  };
+
+  const handleCheckboxPwd = (event) => {
+    setSavePwd(event.target.checked);
   };
 
   const canSubmit = () => {
@@ -108,6 +114,14 @@ const LoginPage = ({ onLogin, history }) => {
                 onChange={handleFormChange}
                 onBlur={handlePwd}
                 error={!validPwd}
+              />
+              <FormControlLabel
+                value="end"
+                control={
+                  <Checkbox color="primary" onClick={handleCheckboxPwd} />
+                }
+                label="Recordar Contraseña"
+                labelPlacement="end"
               />
               <Box my={2}>
                 <Box mb={3} textAlign="center">
