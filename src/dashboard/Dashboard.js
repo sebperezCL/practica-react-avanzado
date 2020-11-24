@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
-
 import Layout from '../layout/Layout';
 import TableAdverts from './TableAdverts';
-// import { getAdverts } from '../api/adverts';
-
-// const Dashboard = () => {
-//   getAdverts().then((adverts) => console.log(adverts.data.result.rows));
-//   return (
-//     <Layout>
-//       <div>Hola Ruta Privada</div>
-//     </Layout>
-//   );
-// };
-
-import { Box, Container, makeStyles } from '@material-ui/core';
+import { Box, Container, makeStyles, Card } from '@material-ui/core';
 import Page from '../components/Page';
+import FilterBar from './FilterBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
+  },
+  filters: {
+    marginBottom: '2rem',
   },
 }));
 
@@ -33,7 +25,8 @@ const Dashboard = () => {
     <Page className={classes.root} title="Anuncios">
       <Layout>
         <Container maxWidth={false}>
-          <Box mt={3}>
+          <Box mt={3} display="flex" alignItems="center" flexDirection="column">
+            <FilterBar />
             <TableAdverts></TableAdverts>
           </Box>
         </Container>
