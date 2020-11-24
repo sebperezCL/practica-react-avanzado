@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Layout from '../layout/Layout';
+import TableAdverts from './TableAdverts';
 // import { getAdverts } from '../api/adverts';
 
 // const Dashboard = () => {
@@ -29,12 +30,11 @@ const Dashboard = () => {
   //const [customers] = useState(data);
 
   return (
-    <Page className={classes.root} title="Customers">
+    <Page className={classes.root} title="Anuncios">
       <Layout>
         <Container maxWidth={false}>
           <Box mt={3}>
-            <div>Por acá</div>
-            {/* {<Results customers={customers} />} */}
+            <TableAdverts></TableAdverts>
           </Box>
         </Container>
       </Layout>
