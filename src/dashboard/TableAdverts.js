@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import numeral from 'numeral';
-import 'numeral/locales/es';
+import changeNum2Cur from '../utils/formatNumber';
 
 import {
   Box,
@@ -59,12 +58,11 @@ const TableAdverts = ({ classnames, ...props }) => {
         </TableRow>
       );
 
-    numeral.locale('es');
     return adverts.map(advert => (
       <TableRow hover key={advert._id}>
         <TableCell className={classes.textColumn}>{advert.name}</TableCell>
         <TableCell className={classes.priceColumn}>
-          {numeral(advert.price).format('$ 0,0')}
+          {changeNum2Cur(advert.price)}
         </TableCell>
         <TableCell className={classes.textColumn}>
           {advert.sale ? 'Venta' : 'Compra'}
