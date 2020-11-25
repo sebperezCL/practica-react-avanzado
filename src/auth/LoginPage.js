@@ -14,7 +14,7 @@ import useForm from '../hooks/useForm';
 import Layout from '../layout/Layout';
 import { login } from '../api/auth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -32,16 +32,16 @@ const LoginPage = ({ onLogin, history }) => {
   const [error, setError] = useState(null);
   const classes = useStyles();
 
-  const checkEmail = (email) => {
+  const checkEmail = email => {
     return email ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) : false;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     const credentials = form;
     event.preventDefault();
     setSubmitting(true);
     login(credentials, savePwd)
-      .then((result) => {
+      .then(result => {
         setSubmitting(false);
         if (result) {
           setError(null);
@@ -50,7 +50,7 @@ const LoginPage = ({ onLogin, history }) => {
         }
         setError(new Error('Usuario o contraseña inválidos'));
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         setError(err);
       });
@@ -65,7 +65,7 @@ const LoginPage = ({ onLogin, history }) => {
     return form.password ? setValidPwd(true) : setValidPwd(false);
   };
 
-  const handleCheckboxPwd = (event) => {
+  const handleCheckboxPwd = event => {
     setSavePwd(event.target.checked);
   };
 
