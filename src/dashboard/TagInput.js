@@ -3,7 +3,7 @@ import TagsInput from 'react-tagsinput';
 
 import 'react-tagsinput/react-tagsinput.css'; // If using WebPack and style-loader.
 
-const TagInput = ({ onChange, ...props }) => {
+const TagInput = ({ onChange }) => {
   const [tags, setTags] = useState([]);
 
   const tagProps = {

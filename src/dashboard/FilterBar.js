@@ -18,6 +18,7 @@ import changeNum2Cur from '../utils/formatNumber';
 import TagSelect from '../shared/TagSelect';
 import { getAllowedTags } from '../api/adverts';
 
+// eslint-disable-next-line no-unused-vars
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 1000,

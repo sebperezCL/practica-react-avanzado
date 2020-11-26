@@ -28,7 +28,7 @@ const MenuProps = {
   },
 };
 
-const TagSelect = ({ onChange, allowedTags, ...props }) => {
+const TagSelect = ({ onChange, allowedTags }) => {
   const classes = useStyles();
 
   const [tagName, setTagName] = useState([]);

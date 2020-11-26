@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import TableAdverts from './TableAdverts';
-import { Box, Container, makeStyles, Card } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import Page from '../components/Page';
 import FilterBar from './FilterBar';
 import { getAdverts } from '../api/adverts';
