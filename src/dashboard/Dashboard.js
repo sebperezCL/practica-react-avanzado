@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import TableAdverts from './TableAdverts';
 import { Box, Container, makeStyles, Card } from '@material-ui/core';
 import Page from '../components/Page';
 import FilterBar from './FilterBar';
+import { getAdverts } from '../api/adverts';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +20,21 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  //const [customers] = useState(data);
+  const [adverts, setAdverts] = useState(null);
+
+  useEffect(() => {
+    getAdverts()
+      .then(adverts => {
+        const {
+          data: { result },
+        } = adverts;
+        setAdverts(result.rows);
+      })
+      .catch(err => {
+        setAdverts(null);
+        console.log(err);
+      });
+  }, []);
 
   return (
     <Page className={classes.root} title="Anuncios">
@@ -27,7 +42,7 @@ const Dashboard = () => {
         <Container maxWidth={false}>
           <Box mt={3} display="flex" alignItems="center" flexDirection="column">
             <FilterBar />
-            <TableAdverts></TableAdverts>
+            <TableAdverts adverts={adverts}></TableAdverts>
           </Box>
         </Container>
       </Layout>

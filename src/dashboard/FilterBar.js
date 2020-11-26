@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,27 +15,31 @@ import {
   Grid,
 } from '@material-ui/core';
 import changeNum2Cur from '../utils/formatNumber';
-import TagInput from './TagInput';
+import TagSelect from '../shared/TagSelect';
+import { getAllowedTags } from '../api/adverts';
 
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 1000,
   },
-
   inputForm: {
     minWidth: '50ch',
   },
-
   selectLabel: {
     marginTop: 0,
   },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
 }));
 
-const FilterBar = () => {
+const FilterBar = ({ onSearch }) => {
   const classes = useStyles();
   const [buySell, setBuySell] = useState('');
-  const [price, setPrice] = useState([0, 10000000]);
+  const [price, setPrice] = useState([0, 10000]);
   const [tags, setTags] = useState([]);
+  const [allowedTags, setAllowedTags] = useState([]);
   const [name, setName] = useState('');
 
   const handleNameChange = event => {
@@ -53,6 +57,15 @@ const FilterBar = () => {
   const handleTagsChange = tags => {
     setTags(tags);
   };
+
+  useEffect(() => {
+    getAllowedTags().then(response => {
+      const {
+        data: { result: tags },
+      } = response;
+      setAllowedTags(tags);
+    });
+  }, []);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -94,7 +107,6 @@ const FilterBar = () => {
                         onChange={handleBuyChange}
                         labelId="buy-select-label"
                       >
-                        <MenuItem value="Todos">Todos</MenuItem>
                         <MenuItem value="Compra">Compra</MenuItem>
                         <MenuItem value="Venta">Venta</MenuItem>
                       </Select>
@@ -112,21 +124,30 @@ const FilterBar = () => {
                       valueLabelDisplay="off"
                       aria-labelledby="range-slider"
                       min={0}
-                      max={10000000}
-                      //getAriaValueText={valuetext}
+                      max={10000}
                     />
                     <Box display="flex" justifyContent="flex-end">
                       <Typography gutterBottom>
-                        Precio Max: {changeNum2Cur(price[1])}
+                        Precio Max:{' '}
+                        {price[1] < 10000
+                          ? changeNum2Cur(price[1])
+                          : ' Sin límite'}
                       </Typography>
                     </Box>
                   </Grid>
                   <Grid item xs={6}>
-                    <TagInput onChange={handleTagsChange} />
+                    <TagSelect
+                      onChange={handleTagsChange}
+                      allowedTags={allowedTags}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <Box textAlign="center">
-                      <Button variant="outlined" onClick={handleSubmit}>
+                      <Button
+                        variant="outlined"
+                        type="submit"
+                        onClick={handleSubmit}
+                      >
                         Buscar Anuncios
                       </Button>
                     </Box>

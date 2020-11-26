@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import changeNum2Cur from '../utils/formatNumber';
@@ -10,11 +10,9 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { getAdverts } from '../api/adverts';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,23 +30,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableAdverts = ({ classnames, ...props }) => {
-  const [adverts, setAdverts] = useState(null);
+const TableAdverts = ({ adverts }) => {
   const classes = useStyles();
-
-  useEffect(() => {
-    getAdverts()
-      .then(adverts => {
-        const {
-          data: { result },
-        } = adverts;
-        setAdverts(result.rows);
-      })
-      .catch(err => {
-        setAdverts(null);
-        console.log(err);
-      });
-  }, []);
 
   const renderAdverts = () => {
     if (!adverts || adverts.length === 0)
@@ -97,15 +80,8 @@ const TableAdverts = ({ classnames, ...props }) => {
   );
 };
 
-export default TableAdverts;
+TableAdverts.propTypes = {
+  adverts: PropTypes.array.isRequired,
+};
 
-/*<TablePagination
-        component="div"
-        count={5}
-        onChangePage={handleClickPage}
-        // onChangeRowsPerPage={handleLimitChange}
-        page={1} //{page}
-        rowsPerPage={5} //{limit}
-        rowsPerPageOptions={[5, 10, 25]}
-        labelRowsPerPage="Anuncios por página"
-      />*/
+export default TableAdverts;
