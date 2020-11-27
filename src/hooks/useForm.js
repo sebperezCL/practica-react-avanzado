@@ -3,7 +3,7 @@ import { useState } from 'react';
 function useForm(initialForm) {
   const [form, setForm] = useState(initialForm);
 
-  const handleFormChange = (event) => {
+  const handleFormChange = event => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 

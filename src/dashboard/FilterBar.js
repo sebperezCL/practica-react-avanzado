@@ -33,12 +33,19 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  btn: {
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
 }));
+
+// Define el precio máximo mostrado en el slider
+const MAX_PRICE = 100000;
 
 const FilterBar = ({ onSearch }) => {
   const classes = useStyles();
-  const [buySell, setBuySell] = useState('');
-  const [price, setPrice] = useState([0, 10000]);
+  const [buySell, setBuySell] = useState('todos');
+  const [price, setPrice] = useState([0, MAX_PRICE]);
   const [tags, setTags] = useState([]);
   const [allowedTags, setAllowedTags] = useState([]);
   const [name, setName] = useState('');
@@ -70,8 +77,22 @@ const FilterBar = ({ onSearch }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(event);
-    console.log(buySell, price, tags, name);
+    onSearch({
+      name: name,
+      tags: tags.join(),
+      price: price[1] < MAX_PRICE ? price.join('-') : `${price[0]}-`,
+      sale:
+        buySell != 'todos' ? (buySell === 'venta' ? 'true' : 'false') : null,
+    });
+  };
+
+  const handleClean = event => {
+    event.preventDefault();
+    setBuySell('todos');
+    setName('');
+    setTags([]);
+    setPrice([0, MAX_PRICE]);
+    onSearch({});
   };
 
   return (
@@ -93,6 +114,7 @@ const FilterBar = ({ onSearch }) => {
                       className={classes.inputForm}
                       placeholder="Nombre artículo"
                       variant="outlined"
+                      name="name"
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -108,8 +130,9 @@ const FilterBar = ({ onSearch }) => {
                         onChange={handleBuyChange}
                         labelId="buy-select-label"
                       >
-                        <MenuItem value="Compra">Compra</MenuItem>
-                        <MenuItem value="Venta">Venta</MenuItem>
+                        <MenuItem value="todos">Todos</MenuItem>
+                        <MenuItem value="compra">Compra</MenuItem>
+                        <MenuItem value="venta">Venta</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -125,12 +148,12 @@ const FilterBar = ({ onSearch }) => {
                       valueLabelDisplay="off"
                       aria-labelledby="range-slider"
                       min={0}
-                      max={10000}
+                      max={MAX_PRICE}
                     />
                     <Box display="flex" justifyContent="flex-end">
                       <Typography gutterBottom>
                         Precio Max:{' '}
-                        {price[1] < 10000
+                        {price[1] < MAX_PRICE
                           ? changeNum2Cur(price[1])
                           : ' Sin límite'}
                       </Typography>
@@ -145,11 +168,20 @@ const FilterBar = ({ onSearch }) => {
                   <Grid item xs={12}>
                     <Box textAlign="center">
                       <Button
+                        className={classes.btn}
                         variant="outlined"
                         type="submit"
                         onClick={handleSubmit}
                       >
                         Buscar Anuncios
+                      </Button>
+                      <Button
+                        className={classes.btn}
+                        variant="outlined"
+                        type="button"
+                        onClick={handleClean}
+                      >
+                        Limpiar Filtros
                       </Button>
                     </Box>
                   </Grid>

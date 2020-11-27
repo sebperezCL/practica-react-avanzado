@@ -20,10 +20,11 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const [adverts, setAdverts] = useState(null);
+  const [adverts, setAdverts] = useState([]);
+  const [filters, setFilters] = useState([]);
 
   useEffect(() => {
-    getAdverts()
+    getAdverts(filters)
       .then(adverts => {
         const {
           data: { result },
@@ -34,14 +35,18 @@ const Dashboard = () => {
         setAdverts(null);
         console.log(err);
       });
-  }, []);
+  }, [filters]);
+
+  const handleSearch = values => {
+    setFilters(values);
+  };
 
   return (
     <Page className={classes.root} title="Anuncios">
       <Layout>
         <Container maxWidth={false}>
           <Box mt={3} display="flex" alignItems="center" flexDirection="column">
-            <FilterBar />
+            <FilterBar onSearch={handleSearch} />
             <TableAdverts adverts={adverts}></TableAdverts>
           </Box>
         </Container>
