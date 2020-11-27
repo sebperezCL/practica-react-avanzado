@@ -10,7 +10,6 @@ export const getAdverts = filters => {
       Object.entries(filters).filter(value => (value[1] ? value : null))
     )
   );
-
   return client.get(`${advertsBaseUrl}/?${filterString}`);
 };
 

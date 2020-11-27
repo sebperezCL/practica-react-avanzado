@@ -17,8 +17,8 @@ import './App.css';
 function App({ userInitiallyLogged }) {
   const [userLogged, setUserLogged] = useState(userInitiallyLogged);
 
-  const handleLogin = (userLogged) =>
-    new Promise((resolve) => {
+  const handleLogin = userLogged =>
+    new Promise(resolve => {
       setUserLogged(userLogged);
       resolve();
     });
@@ -45,9 +45,7 @@ function App({ userInitiallyLogged }) {
               )
             )}
           </Route>
-          <PrivateRoute path="/dashboard" exact>
-            <Dashboard />
-          </PrivateRoute>
+          <PrivateRoute path="/dashboard" exact component={Dashboard} />
           <Route path="/404" exact>
             <div
               style={{

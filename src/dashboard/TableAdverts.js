@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import changeNum2Cur from '../utils/formatNumber';
+import { Link } from 'react-router-dom';
 
 import {
   Box,
@@ -28,9 +29,12 @@ const useStyles = makeStyles(theme => ({
   textColumn: {
     textAlign: 'center',
   },
+  tableRow: {
+    cursor: 'pointer',
+  },
 }));
 
-const TableAdverts = ({ adverts }) => {
+const TableAdverts = ({ adverts, history }) => {
   const classes = useStyles();
 
   const renderAdverts = () => {
@@ -42,7 +46,12 @@ const TableAdverts = ({ adverts }) => {
       );
 
     return adverts.map(advert => (
-      <TableRow hover key={advert._id}>
+      <TableRow
+        className={classes.tableRow}
+        hover
+        key={advert._id}
+        onClick={() => history.push(`/${advert._id}`)}
+      >
         <TableCell className={classes.textColumn}>{advert.name}</TableCell>
         <TableCell className={classes.priceColumn}>
           {changeNum2Cur(advert.price)}

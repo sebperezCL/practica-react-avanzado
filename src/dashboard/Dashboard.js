@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = ({ history }) => {
   const classes = useStyles();
   const [adverts, setAdverts] = useState([]);
   const [filters, setFilters] = useState([]);
@@ -42,12 +42,12 @@ const Dashboard = () => {
   };
 
   return (
-    <Page className={classes.root} title="Anuncios">
+    <Page className={classes.root}>
       <Layout>
         <Container maxWidth={false}>
           <Box mt={3} display="flex" alignItems="center" flexDirection="column">
             <FilterBar onSearch={handleSearch} />
-            <TableAdverts adverts={adverts}></TableAdverts>
+            <TableAdverts history={history} adverts={adverts}></TableAdverts>
           </Box>
         </Container>
       </Layout>
