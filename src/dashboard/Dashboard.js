@@ -6,20 +6,7 @@ import Page from '../components/Page';
 import FilterBar from './FilterBar';
 import { getAdverts } from '../api/adverts';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-  },
-  filters: {
-    marginBottom: '2rem',
-  },
-}));
-
 const Dashboard = ({ history }) => {
-  const classes = useStyles();
   const [adverts, setAdverts] = useState([]);
   const [filters, setFilters] = useState([]);
 
@@ -42,7 +29,7 @@ const Dashboard = ({ history }) => {
   };
 
   return (
-    <Page className={classes.root}>
+    <Page>
       <Layout>
         <Container maxWidth={false}>
           <Box mt={3} display="flex" alignItems="center" flexDirection="column">

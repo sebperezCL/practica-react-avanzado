@@ -5,7 +5,6 @@ import {
   Container,
   TextField,
   Typography,
-  makeStyles,
   Checkbox,
   FormControlLabel,
 } from '@material-ui/core';
@@ -14,15 +13,6 @@ import useForm from '../hooks/useForm';
 import Layout from '../layout/Layout';
 import { login } from '../api/auth';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(10),
-  },
-}));
-
 const LoginPage = ({ onLogin, history }) => {
   const [submitting, setSubmitting] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
@@ -30,7 +20,6 @@ const LoginPage = ({ onLogin, history }) => {
   const [savePwd, setSavePwd] = useState(false); // estado savePwd para recordar contraseña
   const [form, handleFormChange] = useForm({ email: '', password: '' });
   const [error, setError] = useState(null);
-  const classes = useStyles();
 
   const checkEmail = email => {
     return email ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) : false;
@@ -76,7 +65,7 @@ const LoginPage = ({ onLogin, history }) => {
 
   return (
     <Layout>
-      <Page className={classes.root}>
+      <Page>
         <Box
           display="flex"
           flexDirection="column"
