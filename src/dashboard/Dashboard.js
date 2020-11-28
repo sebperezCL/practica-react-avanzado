@@ -5,21 +5,13 @@ import { Box, Container } from '@material-ui/core';
 import Page from '../components/Page';
 import FilterBar from './FilterBar';
 import { getAdverts } from '../api/adverts';
-import { useLocation } from 'react-router-dom';
 
 const Dashboard = ({ history }) => {
   const [adverts, setAdverts] = useState([]);
   const [filters, setFilters] = useState([]);
   const [submitting, setSubmitting] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
-    if (location.deletedAdvert) {
-      searchAdverts();
-    }
-  }, [location]);
-
-  const searchAdverts = () => {
     setSubmitting(true);
     getAdverts(filters)
       .then(response => {
@@ -34,10 +26,6 @@ const Dashboard = ({ history }) => {
         console.log(err);
         setSubmitting(false);
       });
-  };
-
-  useEffect(() => {
-    searchAdverts();
   }, [filters]);
 
   const handleSearch = values => {

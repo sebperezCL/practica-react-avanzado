@@ -1,7 +1,7 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState, useEffect } from 'react';
-import { Delete, Home, Check } from '@material-ui/icons';
-import { Button, Popover } from '@material-ui/core';
+import { Delete, Home, Check, Error } from '@material-ui/icons';
+import { Button, Popover, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import changeNum2Cur from '../utils/formatNumber';
 import { deleteAdvert } from '../api/adverts';
@@ -40,15 +40,27 @@ const AdvertCard = ({
   const [imgError, setImgError] = useState(false);
   const [imgPath, setImgPath] = useState(baseURL + photo);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [deleteError, setDeleteError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleOpenPopover = event => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleDeleteAdvert = () => {
-    deleteAdvert(advertId).then(
-      history.push({ pathname: '/dashboard', deletedAdvert: advertId })
-    );
+    setSubmitting(true);
+    setDeleteError(false);
+    deleteAdvert(advertId).then(response => {
+      setDeleteError(true);
+      setSubmitting(false);
+      if (response.status === 200) {
+        history.push('/dashboard');
+      }
+    });
+  };
+
+  const sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms));
   };
 
   const handleClose = () => {
@@ -56,7 +68,7 @@ const AdvertCard = ({
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'delete-popover' : undefined;
 
   const handleImageError = () => {
     setImgError(true);
@@ -91,12 +103,14 @@ const AdvertCard = ({
               variant="contained"
               startIcon={<Delete className={classes.iconButton} />}
               onClick={handleOpenPopover}
+              disabled={submitting}
             />
             <Button
               className={classes.backButton}
               variant="contained"
               onClick={() => history.push(`/dashboard`)}
               startIcon={<Home className={classes.iconButton} />}
+              disabled={submitting}
             />
             <Popover
               id={id}
@@ -114,12 +128,24 @@ const AdvertCard = ({
             >
               <div className="popover-delete">
                 <p>¿Confirma la eliminación del anuncio?</p>
-                <Button
-                  className={classes.deleteButton}
-                  variant="contained"
-                  startIcon={<Check className={classes.iconButton} />}
-                  onClick={handleDeleteAdvert}
-                />
+                {!submitting ? (
+                  <Button
+                    className={classes.deleteButton}
+                    variant="contained"
+                    startIcon={<Check className={classes.iconButton} />}
+                    onClick={handleDeleteAdvert}
+                    disabled={submitting}
+                  />
+                ) : (
+                  <CircularProgress />
+                )}
+
+                {deleteError && (
+                  <div className="error-message">
+                    <Error />
+                    <p>Error al eliminar el anuncio</p>
+                  </div>
+                )}
               </div>
             </Popover>
           </div>

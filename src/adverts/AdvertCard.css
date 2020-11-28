@@ -140,3 +140,15 @@ a {
 .popover-delete > p {
   padding-bottom: 15px;
 }
+
+.error-message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+  color: red;
+}
+
+.error-message > p {
+  margin-left: 7px;
+}
