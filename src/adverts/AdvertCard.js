@@ -46,7 +46,9 @@ const AdvertCard = ({
   };
 
   const handleDeleteAdvert = () => {
-    deleteAdvert(advertId).then(history.push('/dashboard'));
+    deleteAdvert(advertId).then(
+      history.push({ pathname: '/dashboard', deletedAdvert: advertId })
+    );
   };
 
   const handleClose = () => {
