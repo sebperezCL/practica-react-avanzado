@@ -7,6 +7,7 @@ import LoginPage from '../auth/LoginPage';
 import Dashboard from '../dashboard/Dashboard';
 import { AuthContextProvider } from '../auth/context';
 import PrivateRoute from '../auth/PrivateRoute';
+import ViewAdvert from '../adverts/ViewAdvert';
 
 import './App.css';
 
@@ -46,6 +47,7 @@ function App({ userInitiallyLogged }) {
             )}
           </Route>
           <PrivateRoute path="/dashboard" exact component={Dashboard} />
+          <PrivateRoute path="/advert/:advertId" exact component={ViewAdvert} />
           <Route path="/404" exact>
             <div
               style={{

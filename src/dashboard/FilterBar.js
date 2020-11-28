@@ -13,6 +13,7 @@ import {
   Typography,
   Slider,
   Grid,
+  CircularProgress,
 } from '@material-ui/core';
 import changeNum2Cur from '../utils/formatNumber';
 import TagSelect from '../shared/TagSelect';
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 // Define el precio máximo mostrado en el slider
 const MAX_PRICE = 100000;
 
-const FilterBar = ({ onSearch }) => {
+const FilterBar = ({ onSearch, submitting }) => {
   const classes = useStyles();
   const [buySell, setBuySell] = useState('todos');
   const [price, setPrice] = useState([0, MAX_PRICE]);
@@ -172,16 +173,26 @@ const FilterBar = ({ onSearch }) => {
                         variant="outlined"
                         type="submit"
                         onClick={handleSubmit}
+                        disabled={submitting}
                       >
-                        Buscar Anuncios
+                        {submitting ? (
+                          <CircularProgress size={'1.5rem'} />
+                        ) : (
+                          'Buscar Anuncios'
+                        )}
                       </Button>
                       <Button
                         className={classes.btn}
                         variant="outlined"
                         type="button"
                         onClick={handleClean}
+                        disabled={submitting}
                       >
-                        Limpiar Filtros
+                        {submitting ? (
+                          <CircularProgress size={'1.5rem'} />
+                        ) : (
+                          'Limpiar Filtros'
+                        )}
                       </Button>
                     </Box>
                   </Grid>

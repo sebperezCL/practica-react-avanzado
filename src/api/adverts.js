@@ -13,6 +13,10 @@ export const getAdverts = filters => {
   return client.get(`${advertsBaseUrl}/?${filterString}`);
 };
 
+export const getSingleAdvert = advertId => {
+  return client.get(`${advertsBaseUrl}/${advertId}`);
+};
+
 export const getAllowedTags = () => {
   return client.get(`${advertsBaseUrl}/tags`);
 };

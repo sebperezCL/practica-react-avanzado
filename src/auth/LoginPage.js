@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -7,6 +7,7 @@ import {
   Typography,
   Checkbox,
   FormControlLabel,
+  CircularProgress,
 } from '@material-ui/core';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
@@ -124,7 +125,7 @@ const LoginPage = ({ onLogin, history }) => {
                   variant="contained"
                   disabled={!canSubmit()}
                 >
-                  Login
+                  {submitting ? <CircularProgress /> : 'Login'}
                 </Button>
               </Box>
             </form>

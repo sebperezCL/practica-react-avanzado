@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import changeNum2Cur from '../utils/formatNumber';
-import { Link } from 'react-router-dom';
 
 import {
   Box,
@@ -50,7 +49,7 @@ const TableAdverts = ({ adverts, history }) => {
         className={classes.tableRow}
         hover
         key={advert._id}
-        onClick={() => history.push(`/${advert._id}`)}
+        onClick={() => history.push(`/advert/${advert._id}`)}
       >
         <TableCell className={classes.textColumn}>{advert.name}</TableCell>
         <TableCell className={classes.priceColumn}>
