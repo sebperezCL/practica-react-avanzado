@@ -1,27 +1,45 @@
+/* eslint-disable no-extra-boolean-cast */
 import React, { useState, useEffect } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import changeNum2Cur from '../utils/formatNumber';
+const { REACT_APP_API_URL: baseURL } = process.env;
 
 import './AdvertCard.css';
 
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(0),
-    background: 'red',
+    background: 'crimson',
     color: 'white',
   },
 }));
 
-const AdvertCard = ({ productName, tags, price, operacion }) => {
+const AdvertCard = ({ productName, tags, price, operacion, photo }) => {
   const classes = useStyles();
+  const [imgError, setImgError] = useState(false);
+  const [imgPath, setImgPath] = useState(baseURL + photo);
+
+  const handleImageError = () => {
+    setImgError(true);
+  };
+
+  useEffect(() => {
+    if (imgError) {
+      setImgPath('/img/notfound.png');
+    }
+  }, [imgError]);
+
   return (
     <div className="product-card">
-      <div className="badge">{operacion}</div>
+      {!!operacion ? (
+        <div className="badge-sell">Venta</div>
+      ) : (
+        <div className="badge-buy">Compra</div>
+      )}
       <div className="product-tumb">
-        {' '}
-        <img src="https://i.imgur.com/xdbHo4E.png" alt="" />{' '}
+        <img src={imgPath} alt="" onError={handleImageError} />
       </div>
       <div className="product-details">
         <span className="product-tags">Tags: {tags}</span>

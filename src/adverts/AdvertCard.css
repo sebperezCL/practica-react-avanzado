@@ -20,16 +20,28 @@ a {
   background: #fafafa;
 }
 
-.badge {
+.badge-buy {
   position: absolute;
   left: 0;
   top: 20px;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
-  background: blue;
+  background: darkslategrey;
   color: #fff;
-  padding: 3px 10px;
+  padding: 5px 13px;
+}
+
+.badge-sell {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 700;
+  background: cornflowerblue;
+  color: #fff;
+  padding: 5px 13px;
 }
 
 .button-delete {
@@ -96,8 +108,8 @@ a {
 }
 
 .product-price {
-  font-size: 18px;
-  color: #fbb72c;
+  font-size: 25px;
+  color: cornflowerblue;
   font-weight: 600;
 }
 

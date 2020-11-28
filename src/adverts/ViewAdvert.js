@@ -50,7 +50,6 @@ const ViewAdvert = () => {
           data: { result },
         } = response;
         setAdvert(result);
-        console.log(result);
       })
       .catch(err => setError(err));
   }, []);
@@ -67,7 +66,8 @@ const ViewAdvert = () => {
         productName={advert.name}
         tags={advert.tags.join(', ')}
         price={advert.price}
-        operacion={advert.sell ? 'Venta' : 'Compra'}
+        operacion={advert.sale}
+        photo={advert.photo}
       />
     );
   };
