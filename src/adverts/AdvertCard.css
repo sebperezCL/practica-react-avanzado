@@ -128,3 +128,15 @@ a {
 .product-links a:hover {
   color: #fbb72c;
 }
+
+.popover-delete {
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popover-delete > p {
+  padding-bottom: 15px;
+}

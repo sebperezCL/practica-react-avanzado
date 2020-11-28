@@ -7,7 +7,6 @@ import AuthContext from '../auth/context';
 import { logout } from '../api/auth';
 
 const useStyles = makeStyles({
-  root: {},
   toolbar: {
     height: 64,
     display: 'flex',

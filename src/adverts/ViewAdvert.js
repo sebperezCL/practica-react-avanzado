@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ViewAdvert = () => {
+const ViewAdvert = ({ history }) => {
   const { advertId } = useParams();
   const [advert, setAdvert] = useState(null);
   const [error, setError] = useState(null);
@@ -63,11 +63,13 @@ const ViewAdvert = () => {
 
     return (
       <AdvertCard
+        advertId={advertId}
         productName={advert.name}
         tags={advert.tags.join(', ')}
         price={advert.price}
         operacion={advert.sale}
         photo={advert.photo}
+        history={history}
       />
     );
   };

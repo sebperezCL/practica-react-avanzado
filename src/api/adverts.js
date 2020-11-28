@@ -13,6 +13,10 @@ export const getAdverts = filters => {
   return client.get(`${advertsBaseUrl}/?${filterString}`);
 };
 
+export const deleteAdvert = advertId => {
+  return client.delete(`${advertsBaseUrl}/${advertId}`);
+};
+
 export const getSingleAdvert = advertId => {
   return client.get(`${advertsBaseUrl}/${advertId}`);
 };

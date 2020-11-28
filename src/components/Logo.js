@@ -1,10 +1,14 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, SvgIcon } from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
 
-const Logo = (props) => {
+const Logo = () => {
   return (
     <Box>
-      <img alt="Logo" src="/img/logo192.png" {...props} />
+      <SvgIcon
+        style={{ color: 'white', fontSize: '40' }}
+        component={HomeIcon}
+      />
     </Box>
   );
 };
