@@ -59,10 +59,6 @@ const AdvertCard = ({
     });
   };
 
-  const sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
