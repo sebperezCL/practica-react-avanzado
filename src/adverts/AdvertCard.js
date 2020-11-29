@@ -97,9 +97,7 @@ const AdvertCard = ({
       </div>
       <div className="product-details">
         <span className="product-tags">Tags: {tags}</span>
-        <h4>
-          <a href="">{productName}</a>
-        </h4>
+        <h4>{productName}</h4>
         <div className="product-bottom-details">
           <div className="product-price">{changeNum2Cur(price)}</div>
           <div className="product-links">

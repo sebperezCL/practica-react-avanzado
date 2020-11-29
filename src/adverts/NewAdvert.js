@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import { Box, Container, Switch } from '@material-ui/core';
 import Page from '../components/Page';
-import { Save, PhotoCamera } from '@material-ui/icons';
+import { Save, PhotoCamera, Error } from '@material-ui/icons';
 import TagSelect from '../shared/TagSelect';
 import {
   Button,
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 const NewAdvert = ({ history }) => {
   const classes = useStyles();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [imgAdvert, setImgAdvert] = useState('/img/placeholder-image.png');
   const [allowedTags, setAllowedTags] = useState([]);
@@ -91,13 +91,26 @@ const NewAdvert = ({ history }) => {
   };
 
   const handleSubmit = () => {
+    setSubmitting(true);
     const formData = new FormData();
     formData.append('name', name);
     formData.append('price', unformat(price));
     formData.append('tags', tags);
     formData.append('sale', sale);
     formData.append('photo', file);
-    postAdvert(formData).then(resp => console.log(resp));
+    postAdvert(formData)
+      .then(resp => {
+        setSubmitting(false);
+        const {
+          data: { result },
+        } = resp;
+        history.push(`/advert/${result._id}`);
+      })
+      .catch(err => {
+        setSubmitting(false);
+        setError(true);
+        console.log(err);
+      });
   };
 
   return (
@@ -169,16 +182,26 @@ const NewAdvert = ({ history }) => {
                   </div>
                 </div>
                 <div className="save-container">
-                  <Button
-                    className={classes.saveButton}
-                    variant="contained"
-                    startIcon={<Save />}
-                    onClick={handleSubmit}
-                    disabled={!canSubmit()}
-                  >
-                    Guardar Anuncio
-                  </Button>
+                  {!submitting ? (
+                    <Button
+                      className={classes.saveButton}
+                      variant="contained"
+                      startIcon={<Save />}
+                      onClick={handleSubmit}
+                      disabled={!canSubmit()}
+                    >
+                      Guardar Anuncio
+                    </Button>
+                  ) : (
+                    <CircularProgress />
+                  )}
                 </div>
+                {error && (
+                  <div className="error-container">
+                    <Error />
+                    <p>Error al crear el anuncio</p>
+                  </div>
+                )}
               </div>
             </div>
           </Box>
