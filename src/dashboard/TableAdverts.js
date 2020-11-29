@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { changeNum2Cur } from '../utils/formatNumber';
+import ButtonNewAdvert from '../shared/ButtonNewAdvert';
 
 import {
   Box,
@@ -31,6 +32,14 @@ const useStyles = makeStyles(theme => ({
   tableRow: {
     cursor: 'pointer',
   },
+  noAdverts: {
+    '& > h2': {
+      marginBottom: theme.spacing(2),
+    },
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
 }));
 
 const TableAdverts = ({ adverts, history }) => {
@@ -40,7 +49,12 @@ const TableAdverts = ({ adverts, history }) => {
     if (!adverts || adverts.length === 0)
       return (
         <TableRow>
-          <TableCell colSpan="4">No hay anuncios</TableCell>
+          <TableCell colSpan="4" align="center">
+            <div className={classes.noAdverts}>
+              <h2>No hay anuncios</h2>
+              <ButtonNewAdvert />
+            </div>
+          </TableCell>
         </TableRow>
       );
 

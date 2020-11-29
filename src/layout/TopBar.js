@@ -6,6 +6,7 @@ import Logo from '../components/Logo';
 import AuthContext from '../auth/context';
 import { logout } from '../api/auth';
 import { ExitToApp, AddCircleOutline } from '@material-ui/icons';
+import ButtonNewAdvert from '../shared/ButtonNewAdvert';
 
 const useStyles = makeStyles({
   toolbar: {
@@ -15,14 +16,6 @@ const useStyles = makeStyles({
   },
   img: {
     height: 50,
-  },
-  btnAdd: {
-    '&:hover': {
-      color: 'black',
-    },
-    marginRight: '10px',
-    background: 'teal',
-    color: 'white',
   },
 });
 
@@ -44,15 +37,7 @@ const TopBar = ({ ...props }) => {
         </RouterLink>
         {isLogged ? (
           <Box>
-            <RouterLink to="/newadvert">
-              <Button
-                className={classes.btnAdd}
-                variant="contained"
-                startIcon={<AddCircleOutline />}
-              >
-                Nuevo
-              </Button>
-            </RouterLink>
+            <ButtonNewAdvert />
             <Button
               variant="contained"
               onClick={handleLogout}
