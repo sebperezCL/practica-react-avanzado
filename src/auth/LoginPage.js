@@ -35,7 +35,7 @@ const LoginPage = ({ onLogin, history }) => {
         setSubmitting(false);
         if (result) {
           setError(null);
-          onLogin(result).then(history.push('/dashboard'));
+          onLogin(result).then(history.push('/adverts'));
           return;
         }
         setError(new Error('Usuario o contraseña inválidos'));

@@ -59,7 +59,7 @@ const AdvertCard = ({
       .then(response => {
         setSubmitting(false);
         if (response.status === 200) {
-          history.push('/dashboard');
+          history.push('/adverts');
         }
       })
       .catch(err => {
@@ -111,7 +111,7 @@ const AdvertCard = ({
             <Button
               className={classes.backButton}
               variant="contained"
-              onClick={() => history.push(`/dashboard`)}
+              onClick={() => history.push(`/adverts`)}
               startIcon={<Home className={classes.iconButton} />}
               disabled={submitting}
             />

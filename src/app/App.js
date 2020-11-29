@@ -39,14 +39,14 @@ function App({ userInitiallyLogged }) {
         <Switch>
           <Route path="/" exact>
             {userLogged ? (
-              <Redirect to="/dashboard"></Redirect>
+              <Redirect to="/adverts"></Redirect>
             ) : (
               ({ history }) => (
                 <LoginPage history={history} onLogin={handleLogin} />
               )
             )}
           </Route>
-          <PrivateRoute path="/dashboard" exact component={Dashboard} />
+          <PrivateRoute path="/adverts" exact component={Dashboard} />
           <PrivateRoute path="/advert/:advertId" exact component={ViewAdvert} />
           <PrivateRoute path="/newadvert" exact component={NewAdvert} />
           <Route path="/404" exact>
