@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import changeNum2Cur from '../utils/formatNumber';
+import { changeNum2Cur } from '../utils/formatNumber';
 
 import {
   Box,

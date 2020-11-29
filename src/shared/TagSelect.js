@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
@@ -28,10 +28,14 @@ const MenuProps = {
   },
 };
 
-const TagSelect = ({ onChange, allowedTags }) => {
+const TagSelect = ({ onChange, allowedTags, initialTags }) => {
   const classes = useStyles();
 
   const [tagName, setTagName] = useState([]);
+
+  useEffect(() => {
+    setTagName(initialTags);
+  }, [initialTags]);
 
   const handleChange = event => {
     setTagName(event.target.value);
@@ -41,14 +45,19 @@ const TagSelect = ({ onChange, allowedTags }) => {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="mutiple-checkbox-label">Tags</InputLabel>
+        <InputLabel
+          style={{ textTransform: 'none' }}
+          id="mutiple-checkbox-label"
+        >
+          Tags
+        </InputLabel>
         <Select
           labelId="mutiple-checkbox-label"
           id="mutiple-checkbox"
           multiple
           value={tagName}
           onChange={handleChange}
-          input={<Input />}
+          input={<Input style={{ textTransform: 'none' }} />}
           renderValue={selected => selected.join(', ')}
           MenuProps={MenuProps}
         >

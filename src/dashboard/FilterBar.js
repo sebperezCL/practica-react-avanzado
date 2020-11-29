@@ -15,7 +15,7 @@ import {
   Grid,
   CircularProgress,
 } from '@material-ui/core';
-import changeNum2Cur from '../utils/formatNumber';
+import { changeNum2Cur } from '../utils/formatNumber';
 import TagSelect from '../shared/TagSelect';
 import { getAllowedTags } from '../api/adverts';
 
@@ -163,6 +163,7 @@ const FilterBar = ({ onSearch, submitting }) => {
                   <Grid item xs={6}>
                     <TagSelect
                       onChange={handleTagsChange}
+                      initialTags={tags}
                       allowedTags={allowedTags}
                     />
                   </Grid>

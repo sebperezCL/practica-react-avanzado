@@ -24,3 +24,7 @@ export const getSingleAdvert = advertId => {
 export const getAllowedTags = () => {
   return client.get(`${advertsBaseUrl}/tags`);
 };
+
+export const postAdvert = formData => {
+  return client.post(advertsBaseUrl, formData);
+};

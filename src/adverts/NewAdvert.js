@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, Switch } from '@material-ui/core';
 import Page from '../components/Page';
 import { Save, PhotoCamera } from '@material-ui/icons';
 import TagSelect from '../shared/TagSelect';
@@ -11,8 +11,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { getAllowedTags } from '../api/adverts';
-
-import changeNum2Cur from '../utils/formatNumber';
+import { changeNum2Cur, unformat } from '../utils/formatNumber';
+import { postAdvert } from '../api/adverts';
 
 import './AdvertCard.css';
 
@@ -28,9 +28,8 @@ const useStyles = makeStyles(theme => ({
     minWidth: '38ch',
   },
   priceForm: {
-    //marginTop: theme.spacing(2),
-    //marginBottom: theme.spacing(2),
-    minWidth: '18ch',
+    textAlign: 'right',
+    minWidth: '20ch',
   },
 }));
 
@@ -40,10 +39,11 @@ const NewAdvert = ({ history }) => {
   const [submitting, setSubmitting] = useState(false);
   const [imgAdvert, setImgAdvert] = useState('/img/placeholder-image.png');
   const [allowedTags, setAllowedTags] = useState([]);
-  const [tags, setTags] = useState([]);
   const [file, setFile] = useState(null);
-  const [price, setPrice] = useState('');
+  const [tags, setTags] = useState([]);
   const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [sale, setSale] = useState(true);
 
   const handleFileChange = event => {
     setFile(event.target.files[0]);
@@ -59,6 +59,10 @@ const NewAdvert = ({ history }) => {
 
   const handleNameChange = event => {
     setName(event.target.value);
+  };
+
+  const handleSaleChange = event => {
+    setSale(event.target.checked);
   };
 
   // Efecto para mostrar la imagen en el elemento img al cargarla
@@ -81,6 +85,20 @@ const NewAdvert = ({ history }) => {
       setAllowedTags(tags);
     });
   }, []);
+
+  const canSubmit = () => {
+    return !submitting && tags && name && price;
+  };
+
+  const handleSubmit = () => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', unformat(price));
+    formData.append('tags', tags);
+    formData.append('sale', sale);
+    formData.append('photo', file);
+    postAdvert(formData).then(resp => console.log(resp));
+  };
 
   return (
     <Page>
@@ -117,10 +135,11 @@ const NewAdvert = ({ history }) => {
                   <TagSelect
                     onChange={handleTagsChange}
                     allowedTags={allowedTags}
+                    initialTags={tags}
                   />
                 </span>
                 <TextField
-                  onChange={handlePriceChange}
+                  onChange={handleNameChange}
                   className={classes.inputForm}
                   placeholder="Nombre artículo"
                   variant="outlined"
@@ -140,16 +159,25 @@ const NewAdvert = ({ history }) => {
                     />
                   </div>
                   <div className="product-links">
-                    <Button
-                      className={classes.saveButton}
-                      variant="contained"
-                      startIcon={<Save />}
-                      onClick={() => console.log('click')}
-                      disabled={submitting}
-                    >
-                      Guardar
-                    </Button>
+                    <span>Compra</span>
+                    <Switch
+                      checked={sale}
+                      onChange={handleSaleChange}
+                      name="checkedA"
+                    />
+                    <span>Venta</span>
                   </div>
+                </div>
+                <div className="save-container">
+                  <Button
+                    className={classes.saveButton}
+                    variant="contained"
+                    startIcon={<Save />}
+                    onClick={handleSubmit}
+                    disabled={!canSubmit()}
+                  >
+                    Guardar Anuncio
+                  </Button>
                 </div>
               </div>
             </div>

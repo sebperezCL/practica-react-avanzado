@@ -1,9 +1,12 @@
 import numeral from 'numeral';
 import 'numeral/locales/es';
 
-const changeNum2Cur = number => {
+export const changeNum2Cur = number => {
   numeral.locale('es');
   return numeral(number).format('$ 0,0');
 };
 
-export default changeNum2Cur;
+export const unformat = value => {
+  numeral.locale('es');
+  return numeral(value).value();
+};

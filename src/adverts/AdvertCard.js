@@ -8,7 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import changeNum2Cur from '../utils/formatNumber';
+import { changeNum2Cur } from '../utils/formatNumber';
 import { deleteAdvert } from '../api/adverts';
 
 const { REACT_APP_API_URL: baseURL } = process.env;
@@ -55,13 +55,17 @@ const AdvertCard = ({
   const handleDeleteAdvert = () => {
     setSubmitting(true);
     setDeleteError(false);
-    deleteAdvert(advertId).then(response => {
-      setDeleteError(true);
-      setSubmitting(false);
-      if (response.status === 200) {
-        history.push('/dashboard');
-      }
-    });
+    deleteAdvert(advertId)
+      .then(response => {
+        setSubmitting(false);
+        if (response.status === 200) {
+          history.push('/dashboard');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setDeleteError(true);
+      });
   };
 
   const handleClose = () => {

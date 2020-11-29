@@ -178,3 +178,8 @@ a {
 .btn-upload > span {
   padding-left: 10px;
 }
+
+.save-container {
+  text-align: center;
+  margin-top: 30px;
+}
