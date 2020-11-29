@@ -1,8 +1,13 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState, useEffect } from 'react';
 import { Delete, Home, Check, Error } from '@material-ui/icons';
-import { Button, Popover, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  Button,
+  Popover,
+  CircularProgress,
+  makeStyles,
+} from '@material-ui/core';
+
 import changeNum2Cur from '../utils/formatNumber';
 import { deleteAdvert } from '../api/adverts';
 

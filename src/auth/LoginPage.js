@@ -65,7 +65,7 @@ const LoginPage = ({ onLogin, history }) => {
   };
 
   return (
-    <Layout>
+    <Layout history={history}>
       <Page>
         <Box
           display="flex"

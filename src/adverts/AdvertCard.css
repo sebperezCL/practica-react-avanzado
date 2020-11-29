@@ -13,7 +13,7 @@ a {
   text-decoration: none;
 }
 .product-card {
-  width: 380px;
+  width: 400px;
   position: relative;
   box-shadow: 0 2px 7px #dfdfdf;
   margin: 50px auto;
@@ -75,7 +75,7 @@ a {
   margin-bottom: 18px;
 }
 
-.product-details h4 a {
+.product-details h4 {
   font-weight: 500;
   display: block;
   margin-bottom: 18px;
@@ -151,4 +151,30 @@ a {
 
 .error-message > p {
   margin-left: 7px;
+}
+
+.upload-section {
+  text-align: center;
+  padding-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-upload {
+  display: flex;
+  align-items: center;
+  max-width: 130px;
+  justify-content: center;
+
+  padding: 7px 15px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: sans-serif;
+  color: #999;
+  text-align: center;
+}
+
+.btn-upload > span {
+  padding-left: 10px;
 }

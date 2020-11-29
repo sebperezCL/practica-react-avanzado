@@ -41,10 +41,10 @@ const TagSelect = ({ onChange, allowedTags }) => {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
+        <InputLabel id="mutiple-checkbox-label">Tags</InputLabel>
         <Select
-          labelId="demo-mutiple-checkbox-label"
-          id="demo-mutiple-checkbox"
+          labelId="mutiple-checkbox-label"
+          id="mutiple-checkbox"
           multiple
           value={tagName}
           onChange={handleChange}

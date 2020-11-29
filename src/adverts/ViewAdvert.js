@@ -1,42 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
-import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  makeStyles,
-  Grid,
-  Button,
-} from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import Page from '../components/Page';
 import { useParams } from 'react-router-dom';
 import { getSingleAdvert } from '../api/adverts';
 import { Redirect } from 'react-router-dom';
 import AdvertCard from './AdvertCard';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    maxWidth: 1000,
-  },
-  inputForm: {
-    minWidth: '30ch',
-  },
-  selectLabel: {
-    marginTop: 0,
-  },
-  textOutput: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-
-  btn: {
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-  },
-}));
 
 const ViewAdvert = ({ history }) => {
   const { advertId } = useParams();
@@ -79,6 +48,9 @@ const ViewAdvert = ({ history }) => {
       <Layout>
         <Container maxWidth={false}>
           <Box mt={3} display="flex" alignItems="center" flexDirection="column">
+            <div>
+              <h2>Detalles del anuncio</h2>
+            </div>
             {renderContent()}
           </Box>
         </Container>
