@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './app/App';
 import { BrowserRouter } from 'react-router-dom';
-import storage from './utils/storage';
+
 import { configureClient } from './api/client';
+import storage from './utils/storage';
+import './index.css';
+import App from './components/App';
 
-const auth = storage.get('auth') || { accessToken: null };
+// Read token from storage
+const { token } = storage.get('auth') || { token: null };
 
-configureClient(auth.accessToken);
+// Configure api client
+configureClient(token);
 
 ReactDOM.render(
   <BrowserRouter>
-    <App userInitiallyLogged={!!auth.accessToken} />
+    <App isInitiallyLogged={!!token} />
   </BrowserRouter>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

@@ -1,30 +1,19 @@
 import client from './client';
-import queryString from 'query-string';
 
-const advertsBaseUrl = '/adverts';
+const { REACT_APP_API_HOST: host } = process.env;
 
 export const getAdverts = filters => {
-  const filterString = queryString.stringify(
-    Object.fromEntries(
-      // limpiar campos que vienen vacíos
-      Object.entries(filters).filter(value => (value[1] ? value : null))
-    )
-  );
-  return client.get(`${advertsBaseUrl}/?${filterString}`);
+  return client.get(`/adverts`, { params: filters });
 };
 
-export const deleteAdvert = advertId => {
-  return client.delete(`${advertsBaseUrl}/${advertId}`);
-};
+export const getAdvert = id =>
+  client.get(`/adverts/${id}`).then(response => {
+    response.result.photoUrl = `${host}${response.result.photo}`;
+    return response;
+  });
 
-export const getSingleAdvert = advertId => {
-  return client.get(`${advertsBaseUrl}/${advertId}`);
-};
+export const getTags = () => client.get('/adverts/tags');
 
-export const getAllowedTags = () => {
-  return client.get(`${advertsBaseUrl}/tags`);
-};
+export const createAdvert = advert => client.post(`/adverts`, advert);
 
-export const postAdvert = formData => {
-  return client.post(advertsBaseUrl, formData);
-};
+export const deleteAdvert = id => client.delete(`/adverts/${id}`);

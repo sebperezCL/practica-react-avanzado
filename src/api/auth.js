@@ -1,16 +1,11 @@
 import client from './client';
-
 import storage from '../utils/storage';
 
-export const login = (crendentials, savePwd) =>
-  client.login(crendentials).then((data) => {
-    if (data) {
-      if (savePwd) {
-        storage.set('auth', { accessToken: data.token });
-      }
-      return true;
+export const login = ({ remember, ...credentials }) =>
+  client.login(credentials).then(auth => {
+    if (remember) {
+      storage.set('auth', auth);
     }
-    return false;
   });
 
 export const logout = () =>

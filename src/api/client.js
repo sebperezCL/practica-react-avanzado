@@ -1,8 +1,12 @@
 import axios from 'axios';
-const { REACT_APP_API_URL: apiURL, REACT_APP_API_VER: apiVer } = process.env;
 
-const baseURL = apiURL + apiVer;
+const {
+  REACT_APP_API_HOST: host,
+  REACT_APP_API_VERSION: version,
+} = process.env;
+const baseURL = `${host}/${version}`;
 
+// Create axios instance
 const client = axios.create({
   baseURL,
 });
@@ -15,15 +19,15 @@ const removeAuthorizationHeader = () => {
   delete client.defaults.headers.common['Authorization'];
 };
 
+// Login method
 client.login = credentials =>
-  client.post('/auth/login', credentials).then(({ data }) => {
-    if (data.ok) {
-      setAuthorizationHeader(data.token);
-      return data;
-    }
-    return null;
+  client.post('/auth/login', credentials).then(auth => {
+    // Set Authorization header for future requests
+    setAuthorizationHeader(auth.token);
+    return auth;
   });
 
+// Logout method
 client.logout = () =>
   new Promise(resolve => {
     // Remove Authorization header
@@ -31,9 +35,26 @@ client.logout = () =>
     resolve();
   });
 
-export const configureClient = accessToken => {
-  if (accessToken) {
-    setAuthorizationHeader(accessToken);
+// Intercepts response
+client.interceptors.response.use(
+  ({ data: { ok, ...result } }) => {
+    if (!ok) {
+      return Promise.reject(result.error);
+    }
+    return Promise.resolve(result);
+  },
+  error => {
+    if (error.response) {
+      return Promise.reject(error.response.data.error);
+    }
+    return Promise.reject(error);
+  },
+);
+
+// Configure client
+export const configureClient = token => {
+  if (token) {
+    setAuthorizationHeader(token);
   }
 };
 
