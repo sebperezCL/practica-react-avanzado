@@ -11,10 +11,6 @@ import ViewAdvert from '../adverts/ViewAdvert';
 import NewAdvert from '../adverts/NewAdvert';
 import './App.css';
 
-/**
- * FALTA RECUPERAR AL USUARIO SI YA ESTA LOGUEADO EN EL LOCAL STORAGE
- */
-
 function App({ userInitiallyLogged }) {
   const [userLogged, setUserLogged] = useState(userInitiallyLogged);
 
