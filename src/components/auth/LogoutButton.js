@@ -3,18 +3,18 @@ import T from 'prop-types';
 import { LogoutOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
-import { logout } from '../../api/auth';
+//import { logout } from '../../api/auth';
 import ConfirmationButton from '../shared/ConfirmationButton';
-import { authLogout } from '../../store/ducks/auth';
+import { logout } from '../../store/ducks/auth';
 
 class LogoutButton extends React.Component {
   handleLogout = () => {
-    const { onLogout } = this.props;
-    logout().then(onLogout);
+    const { logout } = this.props;
+    logout(); //.then(onLogout);
   };
 
   render() {
-    const { onLogout, ...props } = this.props;
+    const { logout, ...props } = this.props;
     return (
       <ConfirmationButton
         danger
@@ -38,7 +38,7 @@ class LogoutButton extends React.Component {
 }
 
 LogoutButton.propTypes = {
-  onLogout: T.func.isRequired,
+  logout: T.func.isRequired,
 };
 
-export default connect(null, { onLogout: authLogout })(LogoutButton);
+export default connect(null, { logout })(LogoutButton);

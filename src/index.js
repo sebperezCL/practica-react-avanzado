@@ -22,7 +22,7 @@ const store = configureStore(token ? { auth: { email, token } } : {}, {
 
 ReactDOM.render(
   <Root store={store} history={history}>
-    <App isInitiallyLogged={!!token} />
+    <App />
   </Root>,
   document.getElementById('root')
 );

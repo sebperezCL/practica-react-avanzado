@@ -1,14 +1,13 @@
 import React from 'react';
-import T from 'prop-types';
 import { Button, Checkbox, Input } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import useForm from '../../../hooks/useForm';
 import styles from './LoginForm.module.css';
 import { login } from '../../../store/ducks/auth';
 
-function LoginForm({ onSubmit }) {
+function LoginForm() {
   const dispatch = useDispatch();
   const [form, handleChange] = useForm({
     email: '',
@@ -24,7 +23,6 @@ function LoginForm({ onSubmit }) {
   const handleSubmit = ev => {
     ev.preventDefault();
     dispatch(login(form));
-    //onSubmit(form);
   };
 
   return (
@@ -59,9 +57,5 @@ function LoginForm({ onSubmit }) {
     </form>
   );
 }
-
-LoginForm.propTypes = {
-  onSubmit: T.func.isRequired,
-};
 
 export default LoginForm;
