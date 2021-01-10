@@ -1,10 +1,11 @@
 import React from 'react';
 import T from 'prop-types';
 import { LogoutOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
 
 import { logout } from '../../api/auth';
 import ConfirmationButton from '../shared/ConfirmationButton';
-import { AuthContextConsumer } from '../../contexts/auth';
+import { authLogout } from '../../store/ducks/auth';
 
 class LogoutButton extends React.Component {
   handleLogout = () => {
@@ -40,10 +41,4 @@ LogoutButton.propTypes = {
   onLogout: T.func.isRequired,
 };
 
-const ConnectedToAuthLogoutButton = props => (
-  <AuthContextConsumer>
-    {({ onLogout }) => <LogoutButton onLogout={onLogout} {...props} />}
-  </AuthContextConsumer>
-);
-
-export default ConnectedToAuthLogoutButton;
+export default connect(null, { onLogout: authLogout })(LogoutButton);

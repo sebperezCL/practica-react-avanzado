@@ -1,12 +1,13 @@
 import React from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { useAuthContext } from '../../contexts/auth';
+import { getUser } from '../../store/ducks/auth';
 
 const PrivateRoute = props => {
-  const { isLogged } = useAuthContext();
+  const user = useSelector(getUser);
   const location = useLocation();
-  return isLogged ? (
+  return user ? (
     <Route {...props} />
   ) : (
     <Redirect to={{ pathname: '/login', state: { from: location } }} />

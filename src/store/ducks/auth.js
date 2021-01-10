@@ -1,16 +1,18 @@
+import { beginApiCall, apiCallError } from './app';
+
 /**
  ** Estado inicial para Auth
  **/
 const initialState = {
   auth: {
     email: '',
+    token: '',
   },
 };
 
 /**
  ** Action Types
  **/
-export const AUTH_LOGIN = 'phi/auth/LOGIN';
 export const AUTH_LOGOUT = 'phi/auth/LOGOUT';
 export const AUTH_LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
 export const AUTH_LOGIN_FAILURE = 'auth/LOGIN_FAILURE';
@@ -18,14 +20,6 @@ export const AUTH_LOGIN_FAILURE = 'auth/LOGIN_FAILURE';
 /**
  ** Action Creators
  **/
-export const authLogin = userData => {
-  return {
-    type: AUTH_LOGIN,
-    payload: {
-      userData,
-    },
-  };
-};
 
 export const authLoginFailure = error => ({
   type: AUTH_LOGIN_FAILURE,
@@ -46,17 +40,22 @@ export const authLogout = () => {
 
 export const login = loginData => {
   return async function (dispatch, getState, { history, api }) {
-    const { email, password, remember } = loginData;
-    //dispatch(beginApiCall());
+    dispatch(beginApiCall());
     try {
-      const userData = await api.auth.login({ email, password }, remember);
-      dispatch(authLoginSuccess(userData));
-      history.push('/dashboard');
+      const token = await api.auth.login(loginData);
+      dispatch(authLoginSuccess({ email: loginData.email, token }));
+      history.push('/adverts');
     } catch (error) {
-      //dispatch(apiCallError(error.errorCode, error.message));
+      dispatch(apiCallError(error.errorCode, error.message));
     }
   };
 };
+
+/**
+ ** Selectors
+ */
+
+export const getUser = state => state.auth.email;
 
 /**
  *! Reducer
