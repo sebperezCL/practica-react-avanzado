@@ -3,14 +3,13 @@ import T from 'prop-types';
 import { LogoutOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
-//import { logout } from '../../api/auth';
 import ConfirmationButton from '../shared/ConfirmationButton';
 import { logout } from '../../store/ducks/auth';
 
 class LogoutButton extends React.Component {
   handleLogout = () => {
     const { logout } = this.props;
-    logout(); //.then(onLogout);
+    logout();
   };
 
   render() {

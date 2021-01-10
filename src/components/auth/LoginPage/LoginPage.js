@@ -12,22 +12,6 @@ class LoginPage extends React.Component {
     error: null,
   };
 
-  handleSubmit = credentials => {
-    const { onLogin, location, history } = this.props;
-    this.resetError();
-    login(credentials)
-      .then(() => {
-        onLogin(() => {
-          // Navigate to previously required route
-          const { from } = location.state || { from: { pathname: '/' } };
-          history.replace(from);
-        });
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-  };
-
   resetError = () => this.setState({ error: null });
 
   render() {
@@ -36,7 +20,7 @@ class LoginPage extends React.Component {
       <Row>
         <Col span={8} offset={8} style={{ marginTop: 64 }}>
           <Title style={{ textAlign: 'center' }}>Log In</Title>
-          <LoginForm onSubmit={this.handleSubmit} />
+          <LoginForm />
           {error && (
             <Alert
               afterClose={this.resetError}
@@ -52,13 +36,5 @@ class LoginPage extends React.Component {
     );
   }
 }
-
-LoginPage.propTypes = {
-  onLogin: T.func.isRequired,
-  history: T.shape({ replace: T.func.isRequired }).isRequired,
-  location: T.shape({
-    state: T.shape({ from: T.shape({ pathname: T.string }) }),
-  }).isRequired,
-};
 
 export default LoginPage;

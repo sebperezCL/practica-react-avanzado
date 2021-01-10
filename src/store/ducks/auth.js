@@ -33,11 +33,17 @@ export const authLogoutSuccess = () => {
 
 export const login = loginData => {
   return async function (dispatch, getState, { history, api }) {
+    const {
+      router: { location },
+    } = getState();
+
     dispatch(beginApiCall());
     try {
       const token = await api.auth.login(loginData);
       dispatch(authLoginSuccess({ email: loginData.email, token }));
-      history.push('/adverts');
+      // Navigate to previously required route
+      const { from } = location.state || { from: { pathname: '/' } };
+      history.replace(from);
     } catch (error) {
       dispatch(apiCallError(error.errorCode, error.message));
     }

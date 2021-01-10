@@ -1,5 +1,4 @@
 import React from 'react';
-import T from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -9,18 +8,6 @@ import NotFoundPage from './NotFoundPage';
 import { appStart } from '../../store/ducks/app';
 
 class App extends React.Component {
-  state = {
-    isLogged: this.props.isInitiallyLogged,
-  };
-
-  handleLogin = cb => {
-    this.setState({ isLogged: true }, cb);
-  };
-
-  handleLogout = () => {
-    this.setState({ isLogged: false });
-  };
-
   componentDidMount() {
     const { appStart } = this.props;
     appStart('NodePop');
@@ -32,11 +19,7 @@ class App extends React.Component {
         <Route path="/" exact>
           <Redirect to="/adverts" />
         </Route>
-        <Route path="/login" exact>
-          {routerProps => (
-            <LoginPage onLogin={this.handleLogin} {...routerProps} />
-          )}
-        </Route>
+        <Route path="/login" exact component={LoginPage} />
         <PrivateRoute path="/adverts" exact>
           <AdvertsPage />
         </PrivateRoute>
@@ -52,9 +35,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  isInitiallyLogged: T.bool,
-};
 
 export default connect(null, { appStart })(App);
