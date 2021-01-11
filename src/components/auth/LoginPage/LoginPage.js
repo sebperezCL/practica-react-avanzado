@@ -1,21 +1,17 @@
 import React from 'react';
-import T from 'prop-types';
 import { Alert, Col, Row, Typography } from 'antd';
+import { connect } from 'react-redux';
 
-import { login } from '../../../api/auth';
 import LoginForm from './LoginForm';
+import { getErrorMessage } from '../../../store/ducks/app';
 
 const { Title } = Typography;
 
 class LoginPage extends React.Component {
-  state = {
-    error: null,
-  };
-
   resetError = () => this.setState({ error: null });
 
   render() {
-    const { error } = this.state;
+    const { error } = this.props;
     return (
       <Row>
         <Col span={8} offset={8} style={{ marginTop: 64 }}>
@@ -37,4 +33,10 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+const mapStateToProps = state => {
+  return {
+    error: getErrorMessage(state),
+  };
+};
+
+export default connect(mapStateToProps)(LoginPage);

@@ -1,3 +1,5 @@
+import storage from '../../utils/storage';
+
 /**
  *! Estado inicial para App
  **/
@@ -6,9 +8,14 @@ const initialState = {
     name: '',
     status: {
       error: false,
-      errorCode: 0,
       errorMessage: '',
       apiCallsInProgress: 0,
+    },
+    filters: storage.get('filters') || {
+      name: '',
+      price: [],
+      sale: 'all',
+      tags: [],
     },
   },
 };
@@ -23,20 +30,20 @@ export const APP_BEGIN_API_CALL = 'phi/app/BEGIN_API_CALL';
 /**
  ** Action Creators
  **/
-export const appStart = appName => {
+export const appStart = (appName, storedFilters) => {
   return {
     type: APP_START,
     payload: {
       appName,
+      storedFilters,
     },
   };
 };
 
-export const apiCallError = (code, message) => {
+export const apiCallError = message => {
   return {
     type: APP_API_CALL_ERROR,
     payload: {
-      code,
       message,
     },
   };
@@ -53,6 +60,7 @@ export const beginApiCall = () => {
 export const getAppName = state => state.app.name;
 export const apiLoading = state => state.app.status.apiCallsInProgress > 0;
 export const getErrorMessage = state => state.app.status.errorMessage;
+export const getFilters = state => state.app.filters;
 
 /**
  *! Reducer
@@ -60,14 +68,17 @@ export const getErrorMessage = state => state.app.status.errorMessage;
 export default function reducer(state = initialState.app, action) {
   switch (action.type) {
     case APP_START:
-      return { ...state, name: action.payload.appName };
+      return {
+        ...state,
+        name: action.payload.appName,
+        filters: action.payload.storedFilters || state.filters,
+      };
     case APP_API_CALL_ERROR:
       //! Los Errores al API terminan acá
       return {
         ...state,
         status: {
           error: true,
-          errorCode: action.payload.code,
           errorMessage: action.payload.message,
           apiCallsInProgress: state.status.apiCallsInProgress - 1,
         },

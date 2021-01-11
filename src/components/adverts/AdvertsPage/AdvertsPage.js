@@ -1,22 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Empty, Button, Spin, List, Divider } from 'antd';
+import { connect } from 'react-redux';
+import T from 'prop-types';
 
 import storage from '../../../utils/storage';
 import { getAdverts } from '../../../api/adverts';
 import Layout from '../../layout';
 import FiltersForm, { defaultFilters } from './FiltersForm';
 import AdvertCard from './AdvertCard';
+import { getFilters } from '../../../store/ducks/app';
 
 class AdvertsPage extends React.Component {
   state = {
     adverts: null,
     loading: false,
     error: null,
-    filters: storage.get('filters') || defaultFilters,
+    filters: this.props.filters || defaultFilters,
   };
 
   formatFilters = () => {
+    console.log(this.props.filters);
     const {
       filters: { name, sale, price, tags },
     } = this.state;
@@ -42,7 +46,7 @@ class AdvertsPage extends React.Component {
     this.setState({ loading: true, error: null });
     getAdverts(this.formatFilters())
       .then(({ result }) =>
-        this.setState({ loading: false, adverts: result.rows }),
+        this.setState({ loading: false, adverts: result.rows })
       )
       .catch(error => this.setState({ loading: false, error }));
   };
@@ -150,4 +154,19 @@ class AdvertsPage extends React.Component {
   }
 }
 
-export default AdvertsPage;
+AdvertsPage.propTypes = {
+  filters: T.shape({
+    name: T.string,
+    sale: T.string,
+    price: T.arrayOf(T.number),
+    tags: T.arrayOf(T.string),
+  }),
+};
+
+const mapStateToProps = state => {
+  return {
+    filters: getFilters(state),
+  };
+};
+
+export default connect(mapStateToProps)(AdvertsPage);

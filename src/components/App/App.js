@@ -8,7 +8,8 @@ import NotFoundPage from './NotFoundPage';
 import { appStart } from '../../store/ducks/app';
 
 class App extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     const { appStart } = this.props;
     appStart('NodePop');
   }
