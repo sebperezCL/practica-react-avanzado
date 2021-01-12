@@ -7,8 +7,7 @@ import TagsSelect from '../TagsSelect';
 import FormField from '../../shared/FormField';
 import { saleOptions, MIN_PRICE, MAX_PRICE } from '../definitions';
 import styles from './FiltersForm.module.css';
-import { updateFilters, searchAdverts } from '../../../store/ducks/app';
-import storage from '../../../utils/storage';
+import { searchAdverts, getFilters } from '../../../store/ducks/app';
 
 export const defaultFilters = {
   name: '',
@@ -34,12 +33,9 @@ class FiltersForm extends React.Component {
   handleTagsChange = tags => this.setState({ tags });
 
   handleSubmit = ev => {
-    const { onSubmit } = this.props;
     const { searchAdverts } = this.props;
-    storage.set('filters', this.state);
-    searchAdverts(this.state);
     ev.preventDefault();
-    //onSubmit(this.state);
+    searchAdverts(this.state);
   };
 
   render() {
@@ -111,11 +107,16 @@ FiltersForm.propTypes = {
     price: T.arrayOf(T.number),
     tags: T.arrayOf(T.string),
   }),
-  onSubmit: T.func.isRequired,
 };
 
 FiltersForm.defaultProps = {
   initialFilters: defaultFilters,
 };
 
-export default connect(null, { searchAdverts })(FiltersForm);
+const mapStateToProps = state => {
+  return {
+    initialFilters: getFilters(state),
+  };
+};
+
+export default connect(mapStateToProps, { searchAdverts })(FiltersForm);

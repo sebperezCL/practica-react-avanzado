@@ -4,57 +4,18 @@ import { Empty, Button, Spin, List, Divider } from 'antd';
 import { connect } from 'react-redux';
 import T from 'prop-types';
 
-import storage from '../../../utils/storage';
-import { getAdverts } from '../../../api/adverts';
 import Layout from '../../layout';
 import FiltersForm, { defaultFilters } from './FiltersForm';
 import AdvertCard from './AdvertCard';
-import { getFilters } from '../../../store/ducks/app';
+import {
+  getFilters,
+  getAdverts,
+  searchAdverts,
+  apiLoading,
+  getErrorMessage,
+} from '../../../store/ducks/app';
 
 class AdvertsPage extends React.Component {
-  state = {
-    adverts: null,
-    loading: false,
-    error: null,
-    filters: this.props.filters || defaultFilters,
-  };
-
-  formatFilters = () => {
-    const {
-      filters: { name, sale, price, tags },
-    } = this.state;
-
-    const filters = {};
-    if (name) {
-      filters.name = name;
-    }
-    if (['sell', 'buy'].includes(sale)) {
-      filters.sale = sale === 'sell';
-    }
-    if (price.length) {
-      filters.price = price.join('-');
-    }
-    if (tags.length) {
-      filters.tags = tags.join(',');
-    }
-
-    return filters;
-  };
-
-  getAdverts = () => {
-    this.setState({ loading: true, error: null });
-    getAdverts(this.formatFilters())
-      .then(({ result }) =>
-        this.setState({ loading: false, adverts: result.rows })
-      )
-      .catch(error => this.setState({ loading: false, error }));
-  };
-
-  handleSubmit = filters => {
-    storage.set('filters', filters);
-    this.setState({ filters });
-  };
-
   renderLoading = () => (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <Spin size="large" />
@@ -62,12 +23,12 @@ class AdvertsPage extends React.Component {
   );
 
   renderError = () => {
-    const { error } = this.state;
+    const { error } = this.props;
     return (
       <Empty
         description={<span style={{ color: '#ff4d4f' }}>{`${error}`}</span>}
       >
-        <Button type="primary" danger onClick={this.getAdverts}>
+        <Button type="primary" danger onClick={this.loadAdverts}>
           Reload
         </Button>
       </Empty>
@@ -75,7 +36,7 @@ class AdvertsPage extends React.Component {
   };
 
   renderEmpty = () => {
-    const { filters } = this.state;
+    const { filters } = this.props;
     const isFiltered =
       JSON.stringify(filters) !== JSON.stringify(defaultFilters);
     return (
@@ -102,8 +63,7 @@ class AdvertsPage extends React.Component {
   };
 
   renderAdverts = () => {
-    const { adverts, loading, error } = this.state;
-
+    const { adverts, loading, error } = this.props;
     if (loading) {
       return this.renderLoading();
     }
@@ -129,23 +89,20 @@ class AdvertsPage extends React.Component {
     );
   };
 
-  componentDidMount() {
-    this.getAdverts();
+  loadAdverts() {
+    const { filters, searchAdverts } = this.props;
+    searchAdverts(filters, true);
   }
 
-  componentDidUpdate(prevProps, { filters: prevFilters }) {
-    const { filters } = this.state;
-    if (JSON.stringify(filters) !== JSON.stringify(prevFilters)) {
-      this.getAdverts();
-    }
+  componentDidMount() {
+    this.loadAdverts();
   }
 
   render() {
-    const { filters } = this.state;
     return (
       <Layout title="Adverts list">
         <Divider>Filter your adverts</Divider>
-        <FiltersForm initialFilters={filters} onSubmit={this.handleSubmit} />
+        <FiltersForm />
         <Divider>Adverts</Divider>
         {this.renderAdverts()}
       </Layout>
@@ -165,7 +122,10 @@ AdvertsPage.propTypes = {
 const mapStateToProps = state => {
   return {
     filters: getFilters(state),
+    adverts: getAdverts(state),
+    loading: apiLoading(state),
+    error: getErrorMessage(state),
   };
 };
 
-export default connect(mapStateToProps)(AdvertsPage);
+export default connect(mapStateToProps, { searchAdverts })(AdvertsPage);
