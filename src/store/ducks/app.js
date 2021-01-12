@@ -17,15 +17,17 @@ const initialState = {
       sale: 'all',
       tags: [],
     },
+    adverts: null,
   },
 };
 
 /**
  ** Action Types
  **/
-export const APP_START = 'phi/app/START';
-export const APP_API_CALL_ERROR = 'phi/app/API_CALL_ERROR';
-export const APP_BEGIN_API_CALL = 'phi/app/BEGIN_API_CALL';
+export const APP_START = 'nodepop/app/START';
+export const APP_API_CALL_ERROR = 'nodepop/app/API_CALL_ERROR';
+export const APP_BEGIN_API_CALL = 'nodepop/app/BEGIN_API_CALL';
+export const APP_UPDATE_FILTERS = 'nodepop/app/APP_UPDATE_FILTERS';
 
 /**
  ** Action Creators
@@ -53,6 +55,37 @@ export const beginApiCall = () => {
   return { type: APP_BEGIN_API_CALL };
 };
 
+export const updateFilters = filters => {
+  return {
+    type: APP_UPDATE_FILTERS,
+    payload: {
+      filters,
+    },
+  };
+};
+
+export const searchAdverts = filters => {
+  return async function (dispatch, getState, { history, api }) {
+    const {
+      app: { filters: prevFilters },
+    } = getState();
+    if (JSON.stringify(filters) !== JSON.stringify(prevFilters)) {
+      dispatch(beginApiCall());
+      dispatch(updateFilters(filters));
+    }
+    try {
+      //const token = await api.auth.login(loginData);
+      //dispatch(authLoginSuccess({ email: loginData.email, token }));
+      // Navigate to previously required route
+      //const { from } = location.state || { from: { pathname: '/' } };
+      //history.replace(from);
+    } catch (error) {
+      console.log(error);
+      dispatch(apiCallError(error));
+    }
+  };
+};
+
 /**
  ** Selectors
  */
@@ -61,6 +94,7 @@ export const getAppName = state => state.app.name;
 export const apiLoading = state => state.app.status.apiCallsInProgress > 0;
 export const getErrorMessage = state => state.app.status.errorMessage;
 export const getFilters = state => state.app.filters;
+export const getAdverts = state => state.app.adverts;
 
 /**
  *! Reducer
@@ -94,6 +128,11 @@ export default function reducer(state = initialState.app, action) {
           errorMessage: '',
           apiCallsInProgress: state.status.apiCallsInProgress + 1,
         },
+      };
+    case APP_UPDATE_FILTERS:
+      return {
+        ...state,
+        filters: action.payload.filters,
       };
     default:
       //? Todas las acciones que terminan en SUCCESS deben

@@ -20,7 +20,6 @@ class AdvertsPage extends React.Component {
   };
 
   formatFilters = () => {
-    console.log(this.props.filters);
     const {
       filters: { name, sale, price, tags },
     } = this.state;

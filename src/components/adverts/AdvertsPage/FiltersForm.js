@@ -1,11 +1,14 @@
 import React from 'react';
 import T from 'prop-types';
 import { Button, Input, Slider, Radio, Row, Col } from 'antd';
+import { connect } from 'react-redux';
 
 import TagsSelect from '../TagsSelect';
 import FormField from '../../shared/FormField';
 import { saleOptions, MIN_PRICE, MAX_PRICE } from '../definitions';
 import styles from './FiltersForm.module.css';
+import { updateFilters, searchAdverts } from '../../../store/ducks/app';
+import storage from '../../../utils/storage';
 
 export const defaultFilters = {
   name: '',
@@ -32,8 +35,11 @@ class FiltersForm extends React.Component {
 
   handleSubmit = ev => {
     const { onSubmit } = this.props;
+    const { searchAdverts } = this.props;
+    storage.set('filters', this.state);
+    searchAdverts(this.state);
     ev.preventDefault();
-    onSubmit(this.state);
+    //onSubmit(this.state);
   };
 
   render() {
@@ -112,4 +118,4 @@ FiltersForm.defaultProps = {
   initialFilters: defaultFilters,
 };
 
-export default FiltersForm;
+export default connect(null, { searchAdverts })(FiltersForm);

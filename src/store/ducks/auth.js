@@ -13,8 +13,8 @@ const initialState = {
 /**
  ** Action Types
  **/
-export const AUTH_LOGOUT_SUCCESS = 'phi/auth/LOGOUT_SUCCESS';
-export const AUTH_LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
+export const AUTH_LOGOUT_SUCCESS = 'nodepop/auth/LOGOUT_SUCCESS';
+export const AUTH_LOGIN_SUCCESS = 'nodepop/auth/LOGIN_SUCCESS';
 
 /**
  ** Action Creators
