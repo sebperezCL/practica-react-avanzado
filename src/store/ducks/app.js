@@ -1,5 +1,7 @@
 import storage from '../../utils/storage';
 
+const { REACT_APP_API_HOST: host } = process.env;
+
 /**
  ** Estado inicial para App
  **/
@@ -17,7 +19,7 @@ const initialState = {
       sale: 'all',
       tags: [],
     },
-    adverts: null,
+    adverts: [],
   },
 };
 
@@ -31,6 +33,7 @@ export const APP_API_CALL_SUCCESS = 'nodepop/app/API_CALL_SUCCESS';
 export const APP_UPDATE_FILTERS = 'nodepop/app/APP_UPDATE_FILTERS';
 export const APP_GET_ADVERTS = 'nodepop/app/APP_GET_ADVERTS';
 export const APP_SET_ADVERTS = 'nodepop/app/APP_SET_ADVERTS';
+export const APP_NEW_ADVERT = 'nodepop/app/APP_NEW_ADVERT';
 
 /**
  ** Action Creators
@@ -82,13 +85,48 @@ export const setAdverts = adverts => {
   };
 };
 
-export const getAdvertsFromApi = filters => {
+export const newAdvert = advert => {
+  return {
+    type: APP_NEW_ADVERT,
+    payload: {
+      advert,
+    },
+  };
+};
+
+export const searchAdverts = (filters, forceLoad) => {
   return async function (dispatch, getState, { api }) {
+    const {
+      app: { filters: prevFilters },
+    } = getState();
+    if (JSON.stringify(filters) !== JSON.stringify(prevFilters) || forceLoad) {
+      storage.set('filters', filters);
+      dispatch(updateFilters(filters));
+      dispatch(beginApiCall());
+      try {
+        const { result } = await api.adverts.getAdverts(formatFilters(filters));
+        result.rows.map(
+          r => (r.photoUrl = r.photo ? `${host}${r.photo}` : null)
+        );
+        dispatch(setAdverts(result.rows));
+        dispatch(apiCallSuccess());
+      } catch (error) {
+        const { message } = error;
+        dispatch(apiCallError(message));
+      }
+    }
+  };
+};
+
+export const createAdvert = advert => {
+  return async function (dispatch, getState, { history, api }) {
     dispatch(beginApiCall());
     try {
-      const { result } = await api.adverts.getAdverts(formatFilters(filters));
-      dispatch(setAdverts(result.rows));
+      const { result } = await api.adverts.createAdvert(advert);
+      result.photoUrl = `${host}${result.photo}`;
+      dispatch(newAdvert(result));
       dispatch(apiCallSuccess());
+      history.push(`/adverts/${result._id}`);
     } catch (error) {
       const { message } = error;
       dispatch(apiCallError(message));
@@ -96,15 +134,16 @@ export const getAdvertsFromApi = filters => {
   };
 };
 
-export const searchAdverts = (filters, forceLoad) => {
-  return async function (dispatch, getState) {
-    const {
-      app: { filters: prevFilters },
-    } = getState();
-    if (JSON.stringify(filters) !== JSON.stringify(prevFilters) || forceLoad) {
-      storage.set('filters', filters);
-      dispatch(updateFilters(filters));
-      dispatch(getAdvertsFromApi(filters));
+export const deleteAdvert = advertId => {
+  return async function (dispatch, getState, { history, api }) {
+    dispatch(beginApiCall());
+    try {
+      await api.adverts.deleteAdvert(advertId);
+      dispatch(apiCallSuccess());
+      history.push(`/`);
+    } catch (error) {
+      const { message } = error;
+      dispatch(apiCallError(message));
     }
   };
 };
@@ -119,6 +158,8 @@ export const getErrorMessage = state => state.app.status.errorMessage;
 export const isError = state => state.app.status.error;
 export const getFilters = state => state.app.filters;
 export const getAdverts = state => state.app.adverts;
+export const getAdvert = adverdId => state =>
+  state.app.adverts.filter(advert => advert._id === adverdId)[0] || null;
 
 /**
  ** Reducer
@@ -162,6 +203,11 @@ export default function reducer(state = initialState.app, action) {
       return {
         ...state,
         adverts: action.payload.adverts,
+      };
+    case APP_NEW_ADVERT:
+      return {
+        ...state,
+        adverts: [...state.adverts, action.payload.advert],
       };
     default:
       //? Todas las acciones que terminan en SUCCESS deben

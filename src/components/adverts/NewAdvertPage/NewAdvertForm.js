@@ -1,10 +1,12 @@
 import React from 'react';
 import T from 'prop-types';
 import { Button, Radio, Input, InputNumber, Row, Col } from 'antd';
+import { connect } from 'react-redux';
 
 import TagsSelect from '../TagsSelect';
 import { FormField, InputImage } from '../../shared';
 import * as numbers from '../../../utils/numbers';
+import { createAdvert } from '../../../store/ducks/app';
 
 import { saleOptions, MIN_PRICE, MAX_PRICE } from '../definitions';
 
@@ -50,9 +52,10 @@ class NewAdvertForm extends React.Component {
   handleSaleChange = ev => this.setState({ sale: ev.target.value });
 
   handleSubmit = ev => {
-    const { onSubmit } = this.props;
+    const { createAdvert } = this.props;
     ev.preventDefault();
-    onSubmit(this.getFormData());
+    createAdvert(this.getFormData());
+    //onSubmit(this.getFormData());
   };
 
   render() {
@@ -115,4 +118,4 @@ NewAdvertForm.propTypes = {
   onSubmit: T.func.isRequired,
 };
 
-export default NewAdvertForm;
+export default connect(null, { createAdvert })(NewAdvertForm);
