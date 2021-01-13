@@ -1,34 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Select } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getTags } from '../../api/adverts';
+import { getTags, searchTags } from '../../store/ducks/app';
 
 const { Option } = Select;
 
-class TagsSelect extends React.Component {
-  state = {
-    tags: null,
-  };
+const TagsSelect = props => {
+  const tags = useSelector(getTags);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    getTags().then(({ result: tags }) => this.setState({ tags }));
-  }
+  useEffect(() => {
+    if (!tags) {
+      dispatch(searchTags());
+    }
+  }, []);
 
-  render() {
-    const { tags } = this.state;
-    return (
-      <Select
-        allowClear
-        disabled={!tags}
-        mode="multiple"
-        placeholder="Select tags"
-        style={{ width: '100%' }}
-        {...this.props}
-      >
-        {tags && tags.map(tag => <Option key={tag}>{tag}</Option>)}
-      </Select>
-    );
-  }
-}
+  return (
+    <Select
+      allowClear
+      disabled={!tags}
+      mode="multiple"
+      placeholder="Select tags"
+      style={{ width: '100%' }}
+      {...props}
+    >
+      {tags && tags.map(tag => <Option key={tag}>{tag}</Option>)}
+    </Select>
+  );
+};
 
 export default TagsSelect;

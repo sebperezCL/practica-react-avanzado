@@ -13,6 +13,7 @@ const initialState = {
       errorMessage: '',
       apiCallsInProgress: 0,
     },
+    tags: null,
     filters: storage.get('filters') || {
       name: '',
       price: [],
@@ -30,6 +31,7 @@ export const APP_START = 'nodepop/app/START';
 export const APP_BEGIN_API_CALL = 'nodepop/app/BEGIN_API_CALL';
 export const APP_API_CALL_ERROR = 'nodepop/app/API_CALL_ERROR';
 export const APP_API_CALL_SUCCESS = 'nodepop/app/API_CALL_SUCCESS';
+export const APP_SET_TAGS = 'nodepop/app/APP_SET_TAGS';
 export const APP_UPDATE_FILTERS = 'nodepop/app/APP_UPDATE_FILTERS';
 export const APP_GET_ADVERTS = 'nodepop/app/APP_GET_ADVERTS';
 export const APP_SET_ADVERTS = 'nodepop/app/APP_SET_ADVERTS';
@@ -65,6 +67,15 @@ export const apiCallSuccess = () => {
 
 export const beginApiCall = () => {
   return { type: APP_BEGIN_API_CALL };
+};
+
+export const setTags = tags => {
+  return {
+    type: APP_SET_TAGS,
+    payload: {
+      tags,
+    },
+  };
 };
 
 export const updateFilters = filters => {
@@ -148,6 +159,21 @@ export const deleteAdvert = advertId => {
   };
 };
 
+export const searchTags = () => {
+  return async function (dispatch, getState, { history, api }) {
+    dispatch(beginApiCall());
+    try {
+      const { result } = await api.adverts.getTags();
+      dispatch(setTags(result));
+      dispatch(apiCallSuccess());
+      history.push(`/`);
+    } catch (error) {
+      const { message } = error;
+      dispatch(apiCallError(message));
+    }
+  };
+};
+
 /**
  ** Selectors
  */
@@ -156,6 +182,7 @@ export const getAppName = state => state.app.name;
 export const apiLoading = state => state.app.status.apiCallsInProgress > 0;
 export const getErrorMessage = state => state.app.status.errorMessage;
 export const isError = state => state.app.status.error;
+export const getTags = state => state.app.tags;
 export const getFilters = state => state.app.filters;
 export const getAdverts = state => state.app.adverts;
 export const getAdvert = adverdId => state =>
@@ -193,6 +220,11 @@ export default function reducer(state = initialState.app, action) {
           errorMessage: '',
           apiCallsInProgress: state.status.apiCallsInProgress + 1,
         },
+      };
+    case APP_SET_TAGS:
+      return {
+        ...state,
+        tags: action.payload.tags,
       };
     case APP_UPDATE_FILTERS:
       return {
