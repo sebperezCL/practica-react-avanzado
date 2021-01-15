@@ -10,12 +10,12 @@ const FormHandler = ({ configFields, children, onSubmit }) => {
     return { ...acc, [val]: configFields[val].value };
   }, {});
 
-  const [form, setForm] = useState(initialValues);
+  const [formValues, setForm] = useState(initialValues);
 
   const canSubmit = () => {
-    return Object.keys(form)
+    return Object.keys(formValues)
       .map(f => {
-        if (!form[f] && configFields[f].required) {
+        if (!formValues[f] && configFields[f].required) {
           return false;
         }
         return true;
@@ -25,15 +25,15 @@ const FormHandler = ({ configFields, children, onSubmit }) => {
 
   const handleChange = ev => {
     const { name, type, value, checked } = ev.target;
-    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+    setForm({ ...formValues, [name]: type === 'checkbox' ? checked : value });
   };
 
   return children(
-    form,
+    formValues,
     handleChange,
     canSubmit,
     loading,
-    onSubmit(form, dispatch)
+    onSubmit(formValues, dispatch)
   );
 };
 
