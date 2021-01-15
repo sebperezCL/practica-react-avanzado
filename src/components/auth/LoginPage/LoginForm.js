@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Checkbox, Input, Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 
 import styles from './LoginForm.module.css';
 import { login } from '../../../store/ducks/auth';
-import FormHandler from '../../shared/FormHandler';
+import { FormHandler, Input, Checkbox } from '../../shared/FormHandler';
 
 function LoginForm() {
   const handleSubmit = (formValues, dispatch) => ev => {
@@ -21,30 +21,22 @@ function LoginForm() {
       }}
       onSubmit={handleSubmit}
     >
-      {(formValues, handleChange, canSubmit, loading, handleSubmit) => (
+      {(canSubmit, loading, handleSubmit) => (
         <form onSubmit={handleSubmit}>
           <Input
             name="email"
             className={styles.input}
             prefix={<MailOutlined />}
             placeholder="Email"
-            onChange={handleChange}
-            value={formValues.email}
           />
-          <Input.Password
+          <Input
             name="password"
+            type="password"
             className={styles.input}
             prefix={<LockOutlined />}
             placeholder="Password"
-            onChange={handleChange}
-            value={formValues.password}
           />
-          <Checkbox
-            name="remember"
-            className={styles.input}
-            onChange={handleChange}
-            checked={formValues.remember}
-          >
+          <Checkbox name="remember" className={styles.input}>
             Remember me
           </Checkbox>
           {loading ? (
