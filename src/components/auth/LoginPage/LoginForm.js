@@ -1,28 +1,15 @@
 import React from 'react';
 import { Button, Checkbox, Input, Spin } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
 
-import useForm from '../../../hooks/useForm';
 import styles from './LoginForm.module.css';
 import { login } from '../../../store/ducks/auth';
-import { apiLoading } from '../../../store/ducks/app';
 import FormHandler from '../../shared/FormHandler';
 
 function LoginForm() {
-  const dispatch = useDispatch();
-  const loading = useSelector(apiLoading);
-
-  const [form, handleChange] = useForm({
-    email: '',
-    password: '',
-    remember: false,
-  });
-  const { email, password, remember } = form;
-
-  const handleSubmit = ev => {
+  const handleSubmit = (formValues, dispatch) => ev => {
     ev.preventDefault();
-    dispatch(login(form));
+    dispatch(login(formValues));
   };
 
   return (
@@ -32,8 +19,9 @@ function LoginForm() {
         password: { value: '', required: true },
         remember: { value: false, required: false },
       }}
+      onSubmit={handleSubmit}
     >
-      {(formValues, handleChange, canSubmit) => (
+      {(formValues, handleChange, canSubmit, loading, handleSubmit) => (
         <form onSubmit={handleSubmit}>
           <Input
             name="email"

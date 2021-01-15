@@ -45,7 +45,6 @@ export const login = loginData => {
       const { from } = location.state || { from: { pathname: '/' } };
       history.replace(from);
     } catch (error) {
-      console.log(error);
       dispatch(apiCallError(error));
     }
   };
