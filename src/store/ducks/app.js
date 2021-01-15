@@ -202,6 +202,7 @@ export default function reducer(state = initialState.app, action) {
       };
     case APP_API_CALL_ERROR:
       //! Los Errores al API terminan acá
+      console.log(action.payload.message);
       return {
         ...state,
         status: {

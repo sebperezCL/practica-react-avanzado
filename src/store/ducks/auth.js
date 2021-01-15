@@ -45,7 +45,9 @@ export const login = loginData => {
       const { from } = location.state || { from: { pathname: '/' } };
       history.replace(from);
     } catch (error) {
-      dispatch(apiCallError(error));
+      typeof error === 'string'
+        ? dispatch(apiCallError(error))
+        : dispatch(apiCallError(error.message));
     }
   };
 };
@@ -56,7 +58,7 @@ export const logout = () => {
     try {
       await api.auth.logout();
       dispatch(authLogoutSuccess());
-      //      history.push('/login');
+      history.push('/login');
     } catch (error) {
       dispatch(apiCallError(error));
     }

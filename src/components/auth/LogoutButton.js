@@ -13,7 +13,6 @@ class LogoutButton extends React.Component {
   };
 
   render() {
-    const { logout, ...props } = this.props;
     return (
       <ConfirmationButton
         danger
@@ -30,7 +29,7 @@ class LogoutButton extends React.Component {
           },
         }}
         onConfirm={this.handleLogout}
-        {...props}
+        {...this.props}
       />
     );
   }
