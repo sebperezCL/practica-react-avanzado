@@ -1,5 +1,10 @@
 import React from 'react';
-import { Button, Spin } from 'antd';
+import {
+  Button,
+  Spin,
+  Input as InputAntd,
+  Checkbox as CheckboxAntd,
+} from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 
 import styles from './LoginForm.module.css';
@@ -28,6 +33,7 @@ function LoginForm() {
             className={styles.input}
             prefix={<MailOutlined />}
             placeholder="Email"
+            component={InputAntd}
           />
           <Input
             name="password"
@@ -35,8 +41,13 @@ function LoginForm() {
             className={styles.input}
             prefix={<LockOutlined />}
             placeholder="Password"
+            component={InputAntd}
           />
-          <Checkbox name="remember" className={styles.input}>
+          <Checkbox
+            name="remember"
+            className={styles.input}
+            component={CheckboxAntd}
+          >
             Remember me
           </Checkbox>
           {loading ? (

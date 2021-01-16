@@ -1,9 +1,8 @@
 import React from 'react';
-import { Input as WrappedInput } from 'antd';
 import { FormHandlerContext } from './FormHandler';
 
 const Input = props => {
-  const { type, name } = props;
+  const { type, name, component: WrappedInput } = props;
 
   const inputTypeCheck = (value, handleChange) => {
     if (type === 'password') {

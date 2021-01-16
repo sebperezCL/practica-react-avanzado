@@ -1,9 +1,8 @@
 import React from 'react';
-import { Checkbox as WrappedCheckbox } from 'antd';
 import { FormHandlerContext } from './FormHandler';
 
 const Checkbox = props => {
-  const { name } = props;
+  const { name, component: WrappedCheckbox } = props;
   return (
     <FormHandlerContext.Consumer>
       {({ formValues, handleChange }) => (
