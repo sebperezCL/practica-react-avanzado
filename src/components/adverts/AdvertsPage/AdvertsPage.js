@@ -15,7 +15,7 @@ import {
   getErrorMessage,
 } from '../../../store/ducks/app';
 
-class AdvertsPage extends React.Component {
+export class AdvertsPage extends React.Component {
   renderLoading = () => (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <Spin size="large" />
@@ -117,6 +117,10 @@ AdvertsPage.propTypes = {
     price: T.arrayOf(T.number),
     tags: T.arrayOf(T.string),
   }),
+  adverts: T.array.isRequired,
+  loading: T.bool.isRequired,
+  error: T.string,
+  searchAdverts: T.func.isRequired,
 };
 
 const mapStateToProps = state => {

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvertsPage snapshot 1`] = `
+<Layout
+  title="Adverts list"
+>
+  <Divider>
+    Filter your adverts
+  </Divider>
+  <Connect(FiltersForm) />
+  <Divider>
+    Adverts
+  </Divider>
+  <Empty
+    description={
+      <span>
+        No adverts here!
+      </span>
+    }
+  >
+    <span>
+      Refine your search
+    </span>
+  </Empty>
+</Layout>
+`;

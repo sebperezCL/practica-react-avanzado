@@ -2,7 +2,7 @@ import React from 'react';
 import { FormHandlerContext } from './FormHandler';
 
 const Input = props => {
-  const { type, name, component: WrappedInput } = props;
+  const { type, name, component: WrappedInput, ...rest } = props;
 
   const inputTypeCheck = (value, handleChange) => {
     if (type === 'password') {
@@ -10,11 +10,19 @@ const Input = props => {
         <WrappedInput.Password
           value={value}
           onChange={handleChange}
-          {...props}
+          name={name}
+          {...rest}
         />
       );
     }
-    return <WrappedInput value={value} onChange={handleChange} {...props} />;
+    return (
+      <WrappedInput
+        value={value}
+        onChange={handleChange}
+        name={name}
+        {...rest}
+      />
+    );
   };
 
   return (
